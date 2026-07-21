@@ -12,9 +12,10 @@
 |---|---|
 | **Autor** | Robson Vaamonde |
 | **Data de criação** | 20/07/2026 |
-| **Data de atualização** | 20/07/2026 |
-| **Versão** | 0.01 |
+| **Data de atualização** | 21/07/2026 |
+| **Versão** | 0.02 |
 | **Equipamentos testados** | Archer C50 (W) e Archer EC220-G5 |
+---
 
 ### 🔗 Links do Autor
 
@@ -29,7 +30,6 @@
 | YouTube — Bora para Prática | https://www.youtube.com/boraparapratica |
 | LinkedIn — Robson Vaamonde | https://www.linkedin.com/in/robson-vaamonde-0b029028/ |
 | GitHub — Procedimentos em TI | https://github.com/vaamonde |
-
 ---
 
 ## 📑 Sumário
@@ -37,7 +37,6 @@
 1. [Reset dos Access Points TP-Link Archer](#01---reset-dos-access-points-tp-link-archer)
 2. [Testando a Conexão de Rede](#02---testando-a-conexão-de-rede-dos-access-points-tp-link-archer)
 3. [Acessando via Navegador Web](#03---acessando-via-web-browser-os-access-points-tp-link-archer)
-
 ---
 
 ## 01 - Reset dos Access Points TP-Link Archer
@@ -48,6 +47,7 @@
 |---|---|---|---|---|
 | **TP-Link Archer C50 (W)** | Wi-Fi 5 — 802.11ac | AC1200 | [📄 Datasheet](https://static.tp-link.com/upload/product-overview/2022/202212/20221222/Archer%20C50(W)_V6_Datasheet.pdf) | [📘 Manual de Instalação](https://static.tp-link.com/upload/manual/2022/202212/20221216/Installation%20Guide%20Archer%20C50%20W.pdf) |
 | **TP-Link Archer EC220-G5** | Wi-Fi 5 — 802.11ac | AC1200 | [📄 Datasheet](https://static.tp-link.com/upload/product-overview/2025/202505/20250527/Datasheet_EC220-G5.pdf) | [📘 Manual (BBA Mesh)](https://static.tp-link.com/upload/manual/2026/202607/20260714/BBA%20Mesh_UG_REV1.0.1.pdf) |
+---
 
 ### 🔧 Procedimento de Reset de Fábrica
 
@@ -73,6 +73,7 @@ Antes de acessar a interface web do Access Point, é importante confirmar se o c
 | 1 | Abrir o **PowerShell** (Pesquisa do Windows → `Powershell`) |
 | 2 | Executar o comando: `ipconfig /all` |
 | 3 | Verificar o campo: **`Gateway Padrão`** |
+---
 
 ### 🐧 02. GNU/Linux (Linux Mint ou Kali Linux)
 
@@ -81,12 +82,14 @@ Antes de acessar a interface web do Access Point, é importante confirmar se o c
 | 1 | Abrir o **Terminal** (atalho `Ctrl + Alt + T`) |
 | 2 | Executar o comando: `ip route show` |
 | 3 | Verificar o campo: **`default via`** |
+---
 
 ### 🌐 03. Testando a Comunicação com o Access Point
 
 | Passo | Ação |
 |---|---|
 | 1 | Executar o comando: `ping 192.168.0.1` |
+---
 
 > ✅ **Resultado esperado:** respostas de ping bem-sucedidas (sem *timeout* ou *destination unreachable*) confirmam que o computador está se comunicando corretamente com o Access Point.
 
@@ -100,6 +103,7 @@ Antes de acessar a interface web do Access Point, é importante confirmar se o c
 |---|---|
 | Navegadores recomendados | Google Chrome ou Mozilla Firefox |
 | Endereço de acesso | `192.168.0.1` |
+---
 
 ### 🔐 02. Criando a Senha do Usuário Administrador
 
@@ -107,6 +111,7 @@ Antes de acessar a interface web do Access Point, é importante confirmar se o c
 |---|---|
 | Nova Senha | `Senactit@123` |
 | Confirmar Senha | `Senactit@123` |
+---
 
 ➡️ Clicar em **`Vamos Começar`**
 
@@ -117,6 +122,7 @@ Antes de acessar a interface web do Access Point, é importante confirmar se o c
 | Campo | Valor |
 |---|---|
 | Fuso Horário | (UTC-03:00) Brasília |
+---
 
 ➡️ Clicar em **`Próximo`**
 
@@ -125,6 +131,7 @@ Antes de acessar a interface web do Access Point, é importante confirmar se o c
 | Campo | Valor |
 |---|---|
 | Tipo de Conexão | IP Dinâmico |
+---
 
 ➡️ Clicar em **`Próximo`**
 
@@ -133,6 +140,7 @@ Antes de acessar a interface web do Access Point, é importante confirmar se o c
 | Campo | Valor |
 |---|---|
 | Endereço MAC do Roteador | Utilizar Endereço MAC Padrão |
+---
 
 ➡️ Clicar em **`Próximo`**
 
@@ -143,6 +151,7 @@ Antes de acessar a interface web do Access Point, é importante confirmar se o c
 | Direção de Banda (Band Steering) | 🔴 Desabilitado (OFF) |
 | Rede 2.4 GHz | 🔴 Desabilitado (OFF) |
 | Rede 5.0 GHz | 🔴 Desabilitado (OFF) |
+---
 
 ➡️ Clicar em **`Próximo`**
 
@@ -154,6 +163,7 @@ Antes de acessar a interface web do Access Point, é importante confirmar se o c
 |---|
 | Aguardando conexão... |
 | ✅ Concluído com sucesso |
+---
 
 ➡️ Clicar em **`Próximo`**
 
@@ -162,6 +172,7 @@ Antes de acessar a interface web do Access Point, é importante confirmar se o c
 | Ação |
 |---|
 | **Não será utilizado** nesta aula |
+---
 
 ➡️ Clicar em **`Pular`**
 
@@ -178,4 +189,4 @@ Antes de acessar a interface web do Access Point, é importante confirmar se o c
 - [ ] WLAN 2.4 GHz e 5.0 GHz desabilitadas propositalmente
 - [ ] Etapa do TP-Link Cloud pulada
 
-> 📌 **Próxima aula:** configuração manual da rede Wi-Fi (SSID, senha, canais 2.4 GHz e 5.0 GHz).
+> 📌 **Próxima aula:** configuração manual da rede WAN e LAN.
