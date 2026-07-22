@@ -11,8 +11,8 @@
 |---|---|
 | **Autor** | Robson Vaamonde |
 | **Data de criação** | 20/07/2026 |
-| **Data de atualização** | 21/07/2026 |
-| **Versão** | 0.02 |
+| **Data de atualização** | 22/07/2026 |
+| **Versão** | 0.03 |
 | **Equipamentos testados** | Archer C50 (W) e Archer EC220-G5 |
 ---
 
@@ -50,10 +50,10 @@
 
 ### 🔧 Procedimento de Reset de Fábrica
 
-> ⚠️ **Atenção:** o reset de fábrica apaga **todas** as configurações do equipamento (senhas, rede Wi-Fi, IPs configurados, etc.), retornando-o ao estado original de fábrica. Use somente quando necessário.
+> ⚠️ **Atenção:** o reset de fábrica apaga **todas as configurações do equipamento** (senhas, rede Wi-Fi, IPs configurados, etc.), retornando-o ao estado original de fábrica. Use somente quando necessário.
 ---
 
-> ⚠️ **Atenção:** o modelo **TP-Link C50-(W)** tem Botão __`Liga e Desligada`__ utiliza Fonte de **9V** já o modelo **TP-Link EC220-G5** não tem Botão __`Liga e Desligada`__ e utiliza Fonte de **12V**
+> ⚠️ **Atenção:** o modelo **TP-Link C50-(W)** tem Botão __`Liga e Desligada`__ e utiliza Fonte de **9V** já o modelo **TP-Link EC220-G5** não tem o Botão __`Liga e Desligada`__ e utiliza Fonte de **12V**
 ---
 
 1. Localize o botão **Reset** (geralmente um orifício pequeno na parte traseira ou inferior do equipamento).
@@ -120,7 +120,7 @@
 > ⚠️ **Importante:** utilize sempre senhas fortes em ambientes de produção. A senha acima é padronizada apenas para fins didáticos desta aula.
 ---
 
-### 🌎 03. Selecionando o Fuso Horário
+### 🌎 03. Selecionando o Fuso Horário Modelo Somente TP-Link EC220-G5
 
 | Campo | Valor |
 |---|---|
@@ -129,7 +129,7 @@
 
 ➡️ Clicar em **`Próximo`**
 
-### 🌐 04. Tipo de Conexão (WAN — ISP)
+### 🌐 04. Tipo de Conexão (WAN — ISP) TP-Link EC220-G5 e C50 (W)
 
 | Campo | Valor |
 |---|---|
@@ -138,7 +138,16 @@
 
 ➡️ Clicar em **`Próximo`**
 
-### 🔧 05. Configuração do IP Dinâmico (WAN — ISP)
+### 🌐 05. Tipo de Conexão (WAN — ISP) Somente TP-Link C50 (W)
+
+| Campo | Valor |
+|---|---|
+| ID VLAN | (OFF) Habilitar |
+---
+
+➡️ Clicar em **`Próximo`**
+
+### 🔧 06. Configuração do IP Dinâmico (WAN — ISP) Somente TP-Link EC220-G5
 
 | Campo | Valor |
 |---|---|
@@ -147,7 +156,7 @@
 
 ➡️ Clicar em **`Próximo`**
 
-### 📶 06. Personalizando as Configurações Sem Fio (WLAN)
+### 📶 06. Personalizando as Configurações Sem Fio (WLAN) TP-Link EC220-G5 e C50 (W)
 
 | Configuração | Status |
 |---|---|
@@ -161,7 +170,28 @@
 > 💡 **Nota didática:** as redes sem fio são desabilitadas propositalmente nesta etapa para que a configuração da WLAN seja realizada manualmente em uma aula posterior, reforçando o entendimento de cada parâmetro.
 ---
 
-### ⏳ 07. Conectando à Internet
+### ⏳ 07. Personalizando as Configurações Sem Fio (WLAN) TP-Link EC220-G5 e C50 (W)
+
+| Status |
+|---|
+| Escolha sua conexão atual para continuar:|
+| ✅ (ON) Estou usando uma conexão cabeada. |
+---
+
+➡️ Clicar em **`Próximo`**
+
+### ⏳ 08. Sumário das configurações Somente TP-Link C50 (W)
+
+| Status |
+|---|
+| Tipo de Conexão de Internet: IP Dinâmico |
+| Rede Wireless 2.4GHz: Desabilitado |
+|  Rede Wireless 5GHz: Desabilitado |
+---
+
+➡️ Clicar em **`Salvar`**
+
+### ⏳ 08. Conectando à Internet Somente TP-Link EC220-G5 e C50 (W)
 
 | Status |
 |---|
@@ -171,7 +201,7 @@
 
 ➡️ Clicar em **`Próximo`**
 
-### ☁️ 08. Serviço TP-Link Cloud
+### ☁️ 08. Serviço TP-Link Cloud Somente TP-Link EC220-G5
 
 | Ação |
 |---|
