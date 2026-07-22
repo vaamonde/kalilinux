@@ -52,6 +52,7 @@
 ### 🔧 Procedimento de Reset de Fábrica
 
 > ⚠️ **Atenção:** o reset de fábrica apaga **todas** as configurações do equipamento (senhas, rede Wi-Fi, IPs configurados, etc.), retornando-o ao estado original de fábrica. Use somente quando necessário.
+---
 
 1. Localize o botão **Reset** (geralmente um orifício pequeno na parte traseira ou inferior do equipamento).
 2. Com o Access Point **ligado**, utilize um clipe ou objeto pontiagudo para pressionar o botão.
@@ -59,7 +60,6 @@
 4. Solte o botão e aguarde o reinício completo do equipamento (cerca de 1 a 2 minutos).
 
 > 💡 **Dica:** após o reset, o Access Point volta a utilizar o **IP padrão de fábrica** (geralmente `192.168.0.1` ou `192.168.1.1`, dependendo do modelo) e a rede Wi-Fi padrão impressa na etiqueta do equipamento.
-
 ---
 
 ## 02 - Testando a Conexão de Rede dos Access Points TP-Link Archer
@@ -92,7 +92,6 @@ Antes de acessar a interface web do Access Point, é importante confirmar se o c
 ---
 
 > ✅ **Resultado esperado:** respostas de ping bem-sucedidas (sem *timeout* ou *destination unreachable*) confirmam que o computador está se comunicando corretamente com o Access Point.
-
 ---
 
 ## 03 - Acessando via Web Browser os Access Points TP-Link Archer
@@ -116,6 +115,7 @@ Antes de acessar a interface web do Access Point, é importante confirmar se o c
 ➡️ Clicar em **`Vamos Começar`**
 
 > ⚠️ **Importante:** utilize sempre senhas fortes em ambientes de produção. A senha acima é padronizada apenas para fins didáticos desta aula.
+---
 
 ### 🌎 03. Selecionando o Fuso Horário
 
@@ -156,6 +156,7 @@ Antes de acessar a interface web do Access Point, é importante confirmar se o c
 ➡️ Clicar em **`Próximo`**
 
 > 💡 **Nota didática:** as redes sem fio são desabilitadas propositalmente nesta etapa para que a configuração da WLAN seja realizada manualmente em uma aula posterior, reforçando o entendimento de cada parâmetro.
+---
 
 ### ⏳ 07. Conectando à Internet
 

@@ -59,7 +59,7 @@
 ---
 
 > 💡 **Dica:** quanto mais larga a faixa de frequência (2.4 → 5 → 6 GHz), maior a quantidade de canais disponíveis e menor a chance de sobreposição/interferência entre redes vizinhas — por isso a banda 5 GHz e, principalmente, a 6 GHz são preferíveis em ambientes com muitos Access Points próximos (como salas de aula e escritórios).
-
+---
 
 ## 01 - Configuração da Rede Sem-Fio 2.4 GHz
 
@@ -88,7 +88,6 @@
 ➡️ Clicar em **`Salvar`**
 
 > 💡 **Dica:** substitua `0x` no SSID pelo número real do grupo (ex.: `grupo-01-2.4`) para identificar cada equipamento no laboratório.
-
 ---
 
 ## 02 - Configuração da Rede Sem-Fio 5.0 GHz
@@ -133,7 +132,6 @@ Após salvar as configurações de cada banda (2.4 GHz e 5.0 GHz), utilize o apl
 ---
 
 > 💡 **Dica:** repita o teste de conexão para **cada banda separadamente** (2.4 GHz e 5.0 GHz), comparando velocidade, intensidade de sinal e alcance entre elas.
-
 ---
 
 ## ✅ Checklist Final da Aula

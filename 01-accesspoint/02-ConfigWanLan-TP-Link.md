@@ -45,6 +45,7 @@
 ### 🌐 Servidores DNS com Proteção Familiar/Conteúdo
 
 > 💡 **Dica:** esses servidores DNS filtram automaticamente conteúdo adulto/malicioso na rede, sendo úteis para demonstrar filtragem de DNS em laboratório.
+---
 
 | Provedor | DNS Primário | DNS Secundário |
 |---|---|---|
@@ -72,7 +73,6 @@
 ➡️ Clicar em **`Salvar`**
 
 > ⚠️ **Atenção:** substitua `ap-grupo-0X` pelo número real do grupo/equipamento em laboratório, para facilitar a identificação na rede.
-
 ---
 
 ## 02 - Configuração da Interface de Rede LAN
@@ -129,12 +129,12 @@ Ao salvar, será exibida a mensagem:
 > 💡 **Dica:** o pool de endereços (`.100` a `.150`) define quantos dispositivos podem receber IP automaticamente. Ajuste a faixa conforme a quantidade de hosts esperada na rede do laboratório.
 
 > Testar a conexão com o site: [My-DNS](https://www.top10vpn.com/tools/what-is-my-dns-server/)
-
 ---
 
 ## 04 - Configuração do Serviço de NTP Server
 
 > 🔗 Referência oficial: [NTP.br](https://ntp.br/)
+---
 
 ### 🔧 Procedimento
 
@@ -152,7 +152,6 @@ Ao salvar, será exibida a mensagem:
 ➡️ Clicar em **`Salvar`**
 
 > 💡 **Dica:** a sincronização de horário via NTP é essencial para logs, certificados e autenticação corretos na rede — sempre configure esse serviço após ajustar WAN, LAN e DHCP.
-
 ---
 
 ## ✅ Checklist Final da Aula
