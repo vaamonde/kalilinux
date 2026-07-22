@@ -2,8 +2,7 @@
 
 > **Módulo:** Redes Sem-Fio
 > **Aula:** 03 — Configuração da Rede Sem-Fio Wireless
-> **Equipamentos homologados:** TP-Link Archer C50 e TP-Link Archer EC220-G5
-
+> **Equipamentos homologados:** TP-Link Archer C50 (W) e TP-Link Archer EC220-G5
 ---
 
 ## ℹ️ Informações do Documento

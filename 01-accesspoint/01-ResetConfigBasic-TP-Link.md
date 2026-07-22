@@ -2,8 +2,7 @@
 
 > **Módulo:** Redes Sem-Fio
 > **Aula:** 01 — Reset e Configuração Básica
-> **Equipamentos homologados:** TP-Link Archer C50 e TP-Link Archer EC220-G5
-
+> **Equipamentos homologados:** TP-Link Archer C50 (W) e TP-Link Archer EC220-G5
 ---
 
 ## ℹ️ Informações do Documento
@@ -54,6 +53,9 @@
 > ⚠️ **Atenção:** o reset de fábrica apaga **todas** as configurações do equipamento (senhas, rede Wi-Fi, IPs configurados, etc.), retornando-o ao estado original de fábrica. Use somente quando necessário.
 ---
 
+> ⚠️ **Atenção:** o modelo **TP-Link C50-(W)** tem Botão __`Liga e Desligada`__ utiliza Fonte de **9V** já o modelo **TP-Link EC220-G5** não tem Botão __`Liga e Desligada`__ e utiliza Fonte de **12V**
+---
+
 1. Localize o botão **Reset** (geralmente um orifício pequeno na parte traseira ou inferior do equipamento).
 2. Com o Access Point **ligado**, utilize um clipe ou objeto pontiagudo para pressionar o botão.
 3. Mantenha pressionado por **aproximadamente 5 a 10 segundos**, até que os LEDs do equipamento pisquem simultaneamente.
@@ -64,7 +66,8 @@
 
 ## 02 - Testando a Conexão de Rede dos Access Points TP-Link Archer
 
-Antes de acessar a interface web do Access Point, é importante confirmar se o computador está corretamente conectado à rede.
+> 💡 **Dica:** Antes de acessar a interface web do Access Point, é importante confirmar se o computador está corretamente conectado à rede.
+---
 
 ### 🪟 01. Microsoft Windows (10 ou 11)
 
@@ -100,7 +103,7 @@ Antes de acessar a interface web do Access Point, é importante confirmar se o c
 
 | Item | Valor |
 |---|---|
-| Navegadores recomendados | Google Chrome ou Mozilla Firefox |
+| Navegadores recomendados | `Google Chrome ou Mozilla Firefox` |
 | Endereço de acesso | `192.168.0.1` |
 ---
 
