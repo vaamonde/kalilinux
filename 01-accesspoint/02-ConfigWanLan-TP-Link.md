@@ -40,6 +40,18 @@
 4. [Configuração do Servidor NTP](#04---configuração-do-serviço-de-ntp-server)
 ---
 
+| **Grupo** | **Hostname** | **Rede LAN** | **IP do Roteador** | **DHCP Server** | **Wi-Fi 2.4 GHz** | **Wi-Fi 5 GHz** | **Wi-Fi Convidado** |
+| :-------: | ------------ | ------------ | ------------------ | --------------- | ----------------- | --------------- | ------------------- |
+| **01** | `ap-grupo-01` | `172.16.100.0/24` | `172.16.100.254/24` | `172.16.100.100 – 172.16.100.150` | `grupo-01-2.4` | `grupo-01-5.0` | `guest-grupo-01-5.0` |
+| **02** | `ap-grupo-02` | `172.16.110.0/24` | `172.16.110.254/24` | `172.16.110.100 – 172.16.110.150` | `grupo-02-2.4` | `grupo-02-5.0` | `guest-grupo-02-5.0` |
+| **03** | `ap-grupo-03` | `172.16.120.0/24` | `172.16.120.254/24` | `172.16.120.100 – 172.16.120.150` | `grupo-03-2.4` | `grupo-03-5.0` | `guest-grupo-03-5.0` |
+| **04** | `ap-grupo-04` | `172.16.130.0/24` | `172.16.130.254/24` | `172.16.130.100 – 172.16.130.150` | `grupo-04-2.4` | `grupo-04-5.0` | `guest-grupo-04-5.0` |
+| **05** | `ap-grupo-05` | `172.16.140.0/24` | `172.16.140.254/24` | `172.16.140.100 – 172.16.140.150` | `grupo-05-2.4` | `grupo-05-5.0` | `guest-grupo-05-5.0` |
+| **06** | `ap-grupo-06` | `172.16.150.0/24` | `172.16.150.254/24` | `172.16.150.100 – 172.16.150.150` | `grupo-06-2.4` | `grupo-06-5.0` | `guest-grupo-06-5.0` |
+| **07** | `ap-grupo-07` | `172.16.160.0/24` | `172.16.160.254/24` | `172.16.160.100 – 172.16.160.150` | `grupo-07-2.4` | `grupo-07-5.0` | `guest-grupo-07-5.0` |
+| **08** | `ap-grupo-08` | `172.16.170.0/24` | `172.16.170.254/24` | `172.16.170.100 – 172.16.170.150` | `grupo-08-2.4` | `grupo-08-5.0` | `guest-grupo-08-5.0` |
+---
+
 ## 01 - Configuração do Servidor DNS da Interface de Rede WAN
 
 ### 🌐 Servidores DNS com Proteção Familiar/Conteúdo
@@ -64,10 +76,10 @@
 
 | Campo | Valor | Descrição |
 |---|---|---|
-| Endereço DNS | Utilize os Endereços DNS a seguir | Define que o equipamento não usará o DNS fornecido automaticamente pelo provedor (ISP), e sim os servidores DNS informados manualmente abaixo. |
-| DNS Primário | `1.1.1.3` | Servidor DNS principal, consultado primeiro para resolver nomes de domínio (traduzir `www.site.com` em um endereço IP). Neste caso, é um DNS Cloudflare com filtro de conteúdo adulto (Family). |
-| DNS Secundário | `1.0.0.3` | Servidor DNS de contingência, utilizado automaticamente caso o DNS Primário fique indisponível ou não responda, garantindo continuidade na resolução de nomes. |
-| Nome Host | `ap-grupo-0X` | Nome (hostname) atribuído ao Access Point na rede, usado para identificá-lo facilmente entre outros dispositivos — por exemplo, em listas de clientes conectados, logs do roteador e ferramentas de gerenciamento de rede. |
+| **Endereço DNS** | `Utilize os Endereços DNS a seguir` | Define que o equipamento não usará o DNS fornecido automaticamente pelo provedor (ISP), e sim os servidores DNS informados manualmente abaixo. |
+| **DNS Primário** | `1.1.1.3` | Servidor DNS principal, consultado primeiro para resolver nomes de domínio (traduzir `www.site.com` em um endereço IP). Neste caso, é um DNS Cloudflare com filtro de conteúdo adulto (Family). |
+| **DNS Secundário** | `1.0.0.3` | Servidor DNS de contingência, utilizado automaticamente caso o DNS Primário fique indisponível ou não responda, garantindo continuidade na resolução de nomes. |
+| **Nome Host** | `ap-grupo-0X` | Nome (hostname) atribuído ao Access Point na rede, usado para identificá-lo facilmente entre outros dispositivos — por exemplo, em listas de clientes conectados, logs do roteador e ferramentas de gerenciamento de rede. |
 ---
 
 ➡️ Clicar em **`Salvar`**
@@ -86,8 +98,8 @@
 
 | Campo | Valor | Descrição |
 |---|---|---|
-| Endereço IP | `172.16.xxx.254` | Endereço IP atribuído à interface LAN do Access Point. É por meio dele que os dispositivos da rede local o acessam (via navegador) e, geralmente, também atua como gateway padrão da rede interna. |
-| Máscara de Sub-rede | `255.255.255.0` | Define o tamanho da rede local, delimitando quais endereços IP pertencem à mesma sub-rede (`/24`, ou seja, de `172.16.xxx.1` a `172.16.xxx.254`), permitindo até 254 hosts válidos nessa faixa. |
+| **Endereço IP** | `172.16.xxx.254` | Endereço IP atribuído à interface LAN do Access Point. É por meio dele que os dispositivos da rede local o acessam (via navegador) e, geralmente, também atua como gateway padrão da rede interna. |
+| **Máscara de Sub-rede** | `255.255.255.0` | Define o tamanho da rede local, delimitando quais endereços IP pertencem à mesma sub-rede (`/24`, ou seja, de `172.16.xxx.1` a `172.16.xxx.254`), permitindo até 254 hosts válidos nessa faixa. |
 ---
 
 ➡️ Clicar em **`Salvar`**
@@ -117,11 +129,11 @@ Ao salvar, será exibida a mensagem:
 
 | Campo | Valor | Descrição |
 |---|---|---|
-| DHCP | 🟢 Habilitado (ON) | Ativa o serviço de atribuição automática de endereços IP na rede local, dispensando a configuração manual de IP em cada dispositivo cliente. |
-| Pool Address IP | `172.16.xxx.100` – `172.16.xxx.150` | Faixa de endereços IP reservada para distribuição automática aos dispositivos que se conectam à rede. Neste caso, permite até 51 hosts simultâneos (`.100` a `.150`). |
-| Tempo de Concessão de Endereço | `7200` segundos (120 minutos / 2 horas) | Período (*lease time*) durante o qual um IP fica reservado a um dispositivo antes de precisar ser renovado. Após esse tempo, o cliente solicita a renovação ou recebe um novo endereço do pool. |
-| Gateway Padrão | `172.16.xxx.254` | Endereço IP repassado aos clientes DHCP como porta de saída da rede local — geralmente o próprio IP do Access Point/roteador, usado para rotear tráfego para fora da sub-rede (ex.: Internet). |
-| DNS Primário | `172.16.xxx.254` | Servidor DNS informado aos clientes DHCP para resolução de nomes. Ao apontar para o próprio Access Point, ele pode atuar como *proxy DNS*, repassando as consultas ao DNS configurado na WAN. |
+| **DHCP** | 🟢 Habilitado (ON) | Ativa o serviço de atribuição automática de endereços IP na rede local, dispensando a configuração manual de IP em cada dispositivo cliente. |
+| **Pool Address IP** | `172.16.xxx.100` – `172.16.xxx.150` | Faixa de endereços IP reservada para distribuição automática aos dispositivos que se conectam à rede. Neste caso, permite até 51 hosts simultâneos (`.100` a `.150`). |
+| **Tempo de Concessão de Endereço** | `7200` segundos (120 minutos / 2 horas) | Período (*lease time*) durante o qual um IP fica reservado a um dispositivo antes de precisar ser renovado. Após esse tempo, o cliente solicita a renovação ou recebe um novo endereço do pool. |
+| **Gateway Padrão** | `172.16.xxx.254` | Endereço IP repassado aos clientes DHCP como porta de saída da rede local — geralmente o próprio IP do Access Point/roteador, usado para rotear tráfego para fora da sub-rede (ex.: Internet). |
+| **DNS Primário** | `172.16.xxx.254` | Servidor DNS informado aos clientes DHCP para resolução de nomes. Ao apontar para o próprio Access Point, ele pode atuar como *proxy DNS*, repassando as consultas ao DNS configurado na WAN. |
 ---
 
 ➡️ Clicar em **`Salvar`**

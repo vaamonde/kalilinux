@@ -136,6 +136,15 @@
 | Tipo de Conexão | IP Dinâmico |
 ---
 
+| **Valor** | **Descrição** |
+| --------- | ------------- |
+| **IP Dinâmico (DHCP)** | Obtém automaticamente o endereço IP, gateway, DNS e demais parâmetros de rede do provedor de Internet (ISP). |
+| **IP Estático** | Requer a configuração manual do endereço IP, máscara de rede, gateway e servidores DNS fornecidos pelo provedor. |
+| **PPPoE** | Utiliza autenticação por nome de usuário e senha para estabelecer a conexão com o provedor de Internet. |
+| **L2TP** | Estabelece a conexão utilizando o protocolo L2TP, normalmente exigindo servidor, usuário e senha fornecidos pelo ISP. |
+| **PPTP** | Estabelece a conexão utilizando o protocolo PPTP, exigindo endereço do servidor, usuário e senha fornecidos pelo ISP. |
+---
+
 ➡️ Clicar em **`Próximo`**
 
 ### 🌐 05. Tipo de Conexão (WAN — ISP) Somente TP-Link C50 (W)
@@ -152,6 +161,13 @@
 | Campo | Valor |
 |---|---|
 | Endereço MAC do Roteador | Utilizar Endereço MAC Padrão |
+---
+
+| **Valor** | **Descrição** |
+| --------- | ------------- |
+| **Nenhum** | Utiliza a configuração padrão da conexão com a Internet, sem aplicar perfis de IPTV, VLAN ou modo de ponte. |
+| **Personalizado** | Permite configurar manualmente os parâmetros de IPTV e VLAN de acordo com os requisitos do provedor de Internet (ISP). |
+| **Ponte (Bridge)** | Encaminha o tráfego diretamente para outro equipamento, como um roteador ou firewall, sem realizar roteamento ou NAT para a conexão configurada. |
 ---
 
 ➡️ Clicar em **`Próximo`**
