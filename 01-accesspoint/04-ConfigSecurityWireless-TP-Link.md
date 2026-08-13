@@ -152,7 +152,7 @@
 | Rede de Convidados — 5.0 GHz | 🟢 Habilitado (ON) | Cria uma rede sem-fio separada e isolada da rede principal, destinada a visitantes, sem expor a rede interna/administrativa. |
 | Nome de Rede (SSID) | `guest-grupo-0x-5.0` | Nome público da rede de convidados, exibido separadamente da rede principal na lista de redes disponíveis. |
 | Segurança | WPA2/WPA3-Pessoal | Protocolo de criptografia e autenticação aplicado também à rede de convidados, mantendo o acesso protegido por senha. |
-| Senha | `Senactit@1123` | Chave de acesso (*PSK*) específica da rede de convidados, diferente da senha da rede principal. |
+| Senha | `Senactit@123` | Chave de acesso (*PSK*) específica da rede de convidados, diferente da senha da rede principal. |
 
 ### 🔐 Permissões de Convidado
 
