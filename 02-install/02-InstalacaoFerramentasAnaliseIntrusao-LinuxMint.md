@@ -124,7 +124,7 @@ A suíte **aircrack-ng** (versão 1.7 ou superior no repositório `universe` do 
 
 ```bash
 sudo apt update
-sudo apt install -y aircrack-ng
+sudo apt install -y aircrack-ng wireless-tools
 ```
 
 ### ✅ Testes de Validação

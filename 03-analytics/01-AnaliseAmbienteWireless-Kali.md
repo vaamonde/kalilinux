@@ -64,16 +64,16 @@ Antes de iniciar qualquer teste de invasão contra os protocolos de segurança w
 ### 🔧 Procedimento
 
 ```bash
-# Informações gerais do notebook
-inxi -Fxz          # visão geral (CPU, memória, rede, disco)
-lscpu               # detalhes do processador
-free -h              # memória RAM disponível
-df -h                # espaço em disco
+# Informações gerais do hardware do notebook utilizado nos testes
+sudo inxi -Fxz            # visão geral (CPU, memória, rede, disco)
+sudo lscpu                # detalhes do processador
+sudo free -h              # memória RAM disponível
+sudo df -h                # espaço em disco
 
 # Reconhecimento das interfaces de rede sem-fio
-iwconfig
-iw dev
-lsusb
+sudo iwconfig
+sudo iw dev
+sudo lsusb
 ```
 
 | Campo | Descrição |
@@ -128,7 +128,7 @@ Antes de habilitar o modo monitor, é possível (e recomendado) fazer uma primei
 
 ```bash
 # Escaneamento simples via NetworkManager (linha de comando)
-nmcli device wifi list
+sudo nmcli device wifi list
 
 # Escaneamento via ferramentas nativas do driver
 sudo iw dev wlan0 scan | less
@@ -160,11 +160,14 @@ Para um reconhecimento mais completo (incluindo AP's com SSID oculto, clientes c
 
 ```bash
 # Verificar e finalizar processos conflitantes
-airmon-ng check
-airmon-ng check kill
+sudo airmon-ng check
+sudo airmon-ng check kill
 
 # Habilitar o modo monitor na antena externa
-airmon-ng start wlan1
+sudo airmon-ng start wlan1
+
+# Verificando o modo monitor da antena externa
+sudo iwconfig
 ```
 
 > 💡 **Alternativa (drivers incompatíveis com airmon-ng):**
@@ -195,7 +198,7 @@ airmon-ng start wlan1
 ### 🔧 Procedimento
 
 ```bash
-airodump-ng wlan1mon
+sudo airodump-ng wlan1mon
 ```
 
 Deixe o comando rodando por alguns minutos, observando a lista de APs (parte superior) e de clientes (parte inferior).
@@ -234,7 +237,7 @@ Deixe o comando rodando por alguns minutos, observando a lista de APs (parte sup
 Na mesma execução do `airodump-ng`, observe a seção inferior da tela (**Station**):
 
 ```bash
-airodump-ng wlan1mon
+sudo airodump-ng wlan1mon -w dump_wlan1mon
 ```
 
 | Campo | Descrição |

@@ -209,10 +209,11 @@ sudo reboot
 ### 🔧 Procedimento
 
 ```bash
-# Criar usuário não-root de uso diário (o Kali 2026.2 já força a criação de um usuário não-root na instalação)
-sudo apt install -y curl wget git vim net-tools
+# Instalação de pacotes extras para facilitar o procedimentos de analisa da rede sem-fio
+sudo apt install -y curl wget git vim net-tools wireless-tools inxi
 
 # Habilitar e iniciar o NetworkManager (gerenciamento de rede gráfico no Xfce)
+sudo systemctl status NetworkManager
 sudo systemctl enable NetworkManager
 sudo systemctl start NetworkManager
 ```
