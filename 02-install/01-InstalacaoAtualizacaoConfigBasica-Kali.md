@@ -34,7 +34,15 @@
 | YouTube — Bora para Prática | https://www.youtube.com/boraparapratica |
 | LinkedIn — Robson Vaamonde | https://www.linkedin.com/in/robson-vaamonde-0b029028/ |
 | GitHub — Procedimentos em TI | https://github.com/vaamonde |
+---
 
+## ⚠️ Aviso Legal e Ético — Leia Antes de Iniciar
+
+> Este material é destinado **exclusivamente a fins didáticos**, em **ambiente de rede controlada e isolada** (laboratório), com equipamentos de propriedade da instituição de ensino e consentimento expresso para os testes.
+>
+> A utilização das técnicas aqui descritas contra redes de terceiros, sem autorização formal, configura crime previsto no **Código Penal Brasileiro** (arts. 154-A e 154-B — invasão de dispositivo informático; art. 266 — interrupção de serviço telemático; arts. 155 e 157 — subtração de coisa alheia), além de responsabilidade civil (Código Civil, arts. 927 a 943).
+>
+> Cada grupo deve atacar **somente** o Access Point que lhe foi atribuído no laboratório.
 ---
 
 ## 📑 Sumário

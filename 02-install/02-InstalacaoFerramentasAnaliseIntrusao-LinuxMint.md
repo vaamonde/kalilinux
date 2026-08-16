@@ -41,10 +41,9 @@
 
 > Este material é destinado **exclusivamente a fins didáticos**, em **ambiente de rede controlada e isolada** (laboratório), com equipamentos de propriedade da instituição de ensino e consentimento expresso para os testes.
 >
-> A utilização das ferramentas aqui instaladas contra redes de terceiros, sem autorização formal, configura crime previsto no **Código Penal Brasileiro** (arts. 154-A e 154-B — invasão de dispositivo informático; art. 266 — interrupção de serviço telemático; arts. 155 e 157 — subtração de coisa alheia), além de responsabilidade civil (Código Civil, arts. 927 a 943).
+> A utilização das técnicas aqui descritas contra redes de terceiros, sem autorização formal, configura crime previsto no **Código Penal Brasileiro** (arts. 154-A e 154-B — invasão de dispositivo informático; art. 266 — interrupção de serviço telemático; arts. 155 e 157 — subtração de coisa alheia), além de responsabilidade civil (Código Civil, arts. 927 a 943).
 >
-> Cada grupo deve utilizar as ferramentas **somente** contra o Access Point que lhe foi atribuído no laboratório.
-
+> Cada grupo deve atacar **somente** o Access Point que lhe foi atribuído no laboratório.
 ---
 
 ## 📑 Sumário
@@ -113,7 +112,6 @@ sudo apt full-upgrade -y
 |---|---|
 | 1 | `apt update` conclui sem erros de conexão (`Could not resolve` ou `Connection timed out` indicam bloqueio de rede — comunicar à equipe de TI). |
 | 2 | `apt policy` confirma que os componentes `universe` e `multiverse` estão habilitados. |
-
 ---
 
 ## 03 - Instalação da Suíte Aircrack-ng

