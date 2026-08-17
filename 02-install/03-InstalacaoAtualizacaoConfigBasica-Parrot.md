@@ -348,6 +348,8 @@ sudo apt install -y dkms build-essential git linux-headers-$(uname -r)
 
 # Clonar o driver mantido pelo projeto aircrack-ng
 git clone https://github.com/aircrack-ng/rtl8188eus.git
+
+# Acessando o diretório clocado do driver da placa de rede
 cd rtl8188eus
 
 # Instalar via DKMS
@@ -448,7 +450,6 @@ sudo airodump-ng wlan1mon
 - [ ] Interfaces de cada antena identificadas e anotadas (`wlan0`, `wlan1`, etc.)
 - [ ] `airmon-ng` reconhece ambas as antenas externas sem erros
 - [ ] Fluxo completo de reconhecimento passivo (item 08) reproduzido com sucesso no Parrot
-
 ---
 
 ## 📊 Tabela-Resumo de Equivalência Kali → Parrot
@@ -463,5 +464,6 @@ sudo airodump-ng wlan1mon
 | Driver Atheros AR9271 | nativo (`ath9k_htc`) | nativo (`ath9k_htc`) | nativo (`ath9k_htc`) |
 | mdk3/mdk4 | pré-instalado (`mdk3` ou `mdk4`, conforme versão) | `mdk4` (mdk3 descontinuado) | `mdk4` (a conferir/instalar via `apt`) |
 | Comando de atualização | `apt update && apt full-upgrade` | `apt update && apt full-upgrade` | `apt update && apt upgrade` (ou `full-upgrade` se houver pacotes retidos) |
+---
 
 > 📌 **Próxima aula:** com o notebook em Parrot Security 7.3 equipado com as mesmas ferramentas usadas nas Aulas 06-10 (WEP, WPS, WPA/WPA2, WPA3 e força bruta em WebGUI), os grupos podem reproduzir integralmente os roteiros de `04-aircrack-ng/*` substituindo apenas o sistema operacional da estação de ataque — os comandos, parâmetros e fluxos permanecem os mesmos documentados, com exceção da instalação do driver da antena Realtek (item 07), que segue o mesmo caminho manual já descrito para o Linux Mint (Aula 02b).

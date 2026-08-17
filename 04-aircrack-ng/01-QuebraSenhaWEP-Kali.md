@@ -69,12 +69,12 @@ openssl rand -hex 13
 openssl rand -hex 16
 ```
 
-
 | Passo | Ação |
 |-------|------|
 | 1 | Conectar a placa/antena wireless externa (ex.: Alfa AWUS036ACH ou similar) compatível com **modo monitor e injeção de pacotes** na porta USB da estação Kali Linux. |
 | 2 | Verificar se a placa foi reconhecida pelo sistema. |
 | 3 | Posicionar a antena próxima ao AP do grupo, evitando interferência de outros grupos no mesmo laboratório. |
+---
 
 ```bash
 # Verificando se a interface wireless foi reconhecida no Linux
@@ -88,6 +88,7 @@ sudo lsusb
 |-------|----------------|-----------|
 | Interface | `wlan0` (ou `wlan1`) | Nome da interface de rede sem-fio reconhecida pelo Kali. |
 | Chipset compatível | Atheros, Realtek RTL88xx, Ralink | Chipsets recomendados por suportarem modo monitor e injeção de pacotes nativamente no aircrack-ng suite. |
+---
 
 > ⚠️ **Atenção:** nem toda placa Wi-Fi interna de notebook suporta injeção de pacotes. Recomenda-se sempre uma antena USB externa homologada para pentest.
 
@@ -259,6 +260,7 @@ sudo aircrack-ng -b <BSSID_DO_AP> chavewep-01.cap
 |-----------|-----------|
 | `-b` | Filtra a análise apenas para o BSSID do AP-alvo, caso o arquivo `.cap` contenha pacotes de mais de uma rede. |
 | `chavewep-01.cap` | Arquivo de captura gerado pelo `airodump-ng` no passo 04 (o sufixo numérico é criado automaticamente). |
+---
 
 ### ✅ Resultado Esperado
 

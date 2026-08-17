@@ -15,6 +15,7 @@
 | **Data de atualização** | 22/07/2026 |
 | **Versão** | 0.01 |
 | **Equipamentos testados** | Archer C50 (W) e Archer EC220-G5 |
+---
 
 ### 🔗 Links do Autor
 
@@ -53,29 +54,26 @@
 9. [Ataque Complementar — PMKID (sem handshake completo)](#09---ataque-complementar--pmkid-sem-handshake-completo)
 10. [Validação e Preenchimento do Relatório](#10---validação-e-preenchimento-do-relatório)
 11. [Roteiro da Próxima Aula — WPA3](#-roteiro-da-próxima-aula--wpa3)
-
 ---
 
 ## 01 - Contextualização — WPA x WPA2, PSK x Enterprise, AES x TKIP
 
 | Conceito | Descrição |
-|---|---|
+|----------|-----------|
 | **WPA** (2003) | Solução emergencial lançada após a quebra do WEP. Usa **TKIP** (RC4 melhorado) como cifra padrão. |
 | **WPA2** (2004) | Padrão definitivo, obrigatório na certificação Wi-Fi desde 2006. Introduziu a cifra **AES-CCMP**, opcionalmente ainda aceitando TKIP em modo misto para compatibilidade. |
 | **Modo Pessoal (PSK)** | Autenticação por **chave pré-compartilhada** (senha única para todos os clientes) — é o único modo que o `aircrack-ng`/`hashcat` conseguem atacar. |
 | **Modo Empresarial (802.1X/EAP)** | Autenticação individual por usuário via servidor **RADIUS** — fora do escopo desta aula (sem RADIUS no laboratório). O `airodump-ng` mostra o tipo de autenticação (`PSK` ou `MGT`); redes com `MGT` **não devem ser atacadas** por este método. |
 | **AES (CCMP)** | Cifra robusta, sem quebra criptográfica prática conhecida. |
 | **AES+TKIP (misto)** | Modo de compatibilidade que aceita clientes com ambas as cifras. |
+---
 
 > 💡 **Ponto-chave desta aula:** a cifra utilizada (AES puro ou AES+TKIP) **não altera o método de ataque**. O alvo do ataque não é a cifra dos dados, e sim a **chave pré-compartilhada**, revelada apenas por meio da captura do **4-way handshake** seguida de um ataque de **dicionário** — não existe atalho estatístico como no WEP. **Não há diferença metodológica entre atacar WPA e WPA2**: a técnica é idêntica para os dois protocolos.
 
 > ⚠️ **Sem um bom dicionário, o `aircrack-ng` não tem como recuperar a chave**, mesmo capturando o handshake perfeitamente — reforce esse ponto com a turma antes de iniciar a prática. Utilize a wordlist do laboratório já preparada (`wordlist-laboratorio.txt` / `wordlist-laboratorio-expandida.txt`).
-
 ---
 
 ## 02 - Preparação do Ambiente e Modo Monitor
-
-### 🔧 Procedimento
 
 ```bash
 # Verificar se a interface wireless foi reconhecida
@@ -104,14 +102,12 @@ sudo iwconfig
 ### ✅ Testes de Validação
 
 | # | Teste |
-|---|---|
+|---|-------|
 | 1 | `iwconfig` exibe `wlan1mon` com **Mode:Monitor**. |
 | 2 | Nenhum processo do NetworkManager reaparece interferindo na interface. |
 ---
 
 ## 03 - Reconhecimento e Identificação da Cifra
-
-### 🔧 Procedimento
 
 ```bash
 # Escaneamento da rede utilizando o Airodump-NG em busca de Access Point e End Points
@@ -119,7 +115,7 @@ sudo airodump-ng wlan1mon
 ```
 
 | Campo | Descrição |
-|---|---|
+|-------|-----------|
 | **BSSID** | Endereço MAC do Access Point-alvo. |
 | **CH** | Canal em que o AP está operando. |
 | **ENC** | Deve aparecer como **`WPA`** ou **`WPA2`**. |
@@ -135,14 +131,12 @@ sudo airodump-ng wlan1mon
 ### ✅ Testes de Validação
 
 | # | Teste |
-|---|---|
+|---|-------|
 | 1 | O AP do grupo aparece com **ENC = WPA** ou **WPA2** e **AUTH = PSK**. |
 | 2 | Campo `CIPHER` identificado corretamente (CCMP = AES / TKIP CCMP = AES+TKIP). |
 ---
 
 ## 04 - Captura Direcionada e Handshake
-
-### 🔧 Procedimento
 
 ```bash
 # Focar a captura em um único AP/canal para observar as informações de Beacons e Data Sources
@@ -152,7 +146,7 @@ sudo airodump-ng -c <CANAL> --bssid <BSSID_DO_AP> -w chavewpa wlan1mon
 ```
 
 | Parâmetro | Descrição |
-|---|---|
+|-----------|-----------|
 | `-c` | Fixa a captura no canal do AP-alvo. |
 | `--bssid` | Filtra a captura apenas para o BSSID informado. |
 | `-w chavewpa` | Prefixo dos arquivos de captura gravados em disco (ex.: `chavewpa-01.cap`), usados posteriormente pelo `aircrack-ng`. |
@@ -165,15 +159,17 @@ sudo airodump-ng -c <CANAL> --bssid <BSSID_DO_AP> -w chavewpa wlan1mon
 
 Como o handshake só é gerado no momento da (re)conexão do cliente, forçamos esse evento com um ataque de **desautenticação (deauth)**, obrigando um cliente já conectado a se reconectar — e assim capturamos o handshake completo.
 
-### 🔧 Procedimento
-
 | Passo | Ação |
-|---|---|
+|-------|------|
 | 1 | Abrir um **segundo terminal**, mantendo o `airodump-ng` do passo anterior em execução. |
 | 2 | Rodar o ataque de desautenticação direcionado ao cliente. |
 ---
 
 ```bash
+# Focar a captura em um único AP/canal para observar as informações de Desautenticação (Deauth) e Handshake
+# opções do comando aireplay-ng: -0 (This  attack  sends  deauthentication  packets  to  one  or more clients 
+# which are currently associated with a particular  access point.), -a (Set Access Point MAC address), 
+# -c (Set destination MAC address)
 sudo aireplay-ng -0 5 -a <BSSID_DO_AP> -c <MAC_DO_CLIENTE_STATION> wlan1mon
 ```
 
@@ -182,7 +178,7 @@ sudo aireplay-ng -0 5 -a <BSSID_DO_AP> -c <MAC_DO_CLIENTE_STATION> wlan1mon
 | `-0 5` | Tipo de ataque **deauth**, enviando **5 pacotes** de desautenticação (ajustável; `-0 0` envia continuamente). |
 | `-a` | BSSID (MAC) do AP-alvo. |
 | `-c` | MAC do cliente (Station) a ser desautenticado, obtido no passo 03. |
-| `wlan0mon` | Interface em modo monitor usada para a injeção. |
+| `wlan1mon` | Interface em modo monitor usada para a injeção. |
 
 > ⚠️ **Sem cliente associado (STATION vazio)?** É necessário aguardar passivamente até que algum dispositivo se conecte naturalmente à rede — o modo passivo não exige capacidade de injeção, mas depende de um cliente se autenticar durante a captura.
 
@@ -198,26 +194,25 @@ sudo aireplay-ng -0 5 -a <BSSID_DO_AP> -c <MAC_DO_CLIENTE_STATION> wlan1mon
 
 ## 06 - Verificando se o Handshake foi Capturado
 
-### 🔧 Procedimento
-
 ```bash
-aircrack-ng chavewpa-01.cap
+# Verificando se foi possível capturar o Handshake nas transmissões de Rede Sem-Fio
+# opções do comando aircrack-ng: -b (MAC address of access point)
+sudo aircrack-ng -b <BSSID_DO_AP> chavewpa-01.cap
 ```
 
 Ao rodar sem especificar dicionário, o `aircrack-ng` lista as redes presentes no arquivo `.cap` e indica se um handshake válido foi capturado para o BSSID (`1 handshake` ao lado do ESSID).
 
 > 💡 **Dica:** se o handshake não aparecer, repita os passos 04 e 05 — em ambientes de laboratório com muitos grupos transmitindo simultaneamente, pacotes deauth podem se perder; vale repetir o ataque 2-3 vezes.
-
 ---
 
 ## 07 - Ataque de Dicionário com Aircrack-ng
 
 Com o handshake confirmado, aplica-se o ataque de força bruta por dicionário — método **idêntico para WPA e WPA2**, e **idêntico para AES ou AES+TKIP**.
 
-### 🔧 Procedimento
-
 ```bash
-aircrack-ng -b <BSSID_DO_AP> -w wordlist-laboratorio-expandida.txt chavewpa-01.cap
+# Forçando uma quebra de senha WAP do Access Point utilizando o arquivo de dicionário
+# opções do comando aircrack-ng: -b (MAC address of access point), -w (Path to a dictionary file for wpa cracking)
+sudo aircrack-ng -b <BSSID_DO_AP> -w wordlist-laboratorio-expandida.txt chavewpa-01.cap
 ```
 
 | Parâmetro | Descrição |
@@ -225,6 +220,7 @@ aircrack-ng -b <BSSID_DO_AP> -w wordlist-laboratorio-expandida.txt chavewpa-01.c
 | `-b` | Filtra a análise para o BSSID do AP-alvo, caso o `.cap` tenha capturado mais de uma rede. |
 | `-w` | Caminho do arquivo de dicionário (wordlist) a ser testado contra o handshake. |
 | `chavewpa-01.cap` | Arquivo de captura gerado no passo 04. |
+---
 
 ### ✅ Resultado Esperado
 
@@ -232,29 +228,28 @@ aircrack-ng -b <BSSID_DO_AP> -w wordlist-laboratorio-expandida.txt chavewpa-01.c
 |---|---|
 | ✅ `KEY FOUND! [ senha ]` | Senha PSK descoberta — anotar no relatório do grupo (junto com BSSID, ESSID e cifra AES/AES+TKIP). |
 | ❌ `Passphrase not in dictionary` | A senha não consta na wordlist utilizada — confirmar se a senha do grupo está entre as sorteadas ou revisar a wordlist expandida. |
+---
 
 > ⚠️ **Reforço conceitual:** diferente do WEP, aqui **não adianta capturar mais pacotes** — se a senha não estiver no dicionário, o ataque falha independentemente do tempo de captura. A qualidade da wordlist é o fator decisivo.
-
 ---
 
 ## 08 - Acelerando com GPU — Hashcat
 
 Para dicionários maiores ou testes de desempenho comparado, o **hashcat** aproveita a GPU e é significativamente mais rápido que o `aircrack-ng` (que roda em CPU).
 
-### 🔧 Procedimento
-
 ```bash
 # Converter a captura .cap para o formato aceito pelo hashcat
-hcxpcapngtool -o chavewpa.22000 chavewpa-01.cap
+sudo hcxpcapngtool -o chavewpa.22000 chavewpa-01.cap
 
 # Rodar o ataque de dicionário (modo 22000 = WPA-PBKDF2-PMKID+EAPOL)
-hashcat -m 22000 chavewpa.22000 wordlist-laboratorio-expandida.txt
+sudo hashcat -m 22000 chavewpa.22000 wordlist-laboratorio-expandida.txt
 ```
 
 | Parâmetro | Descrição |
 |---|---|
 | `hcxpcapngtool` | Converte o `.cap` do `airodump-ng` para o formato `.22000` esperado pelo hashcat (ferramenta do pacote `hcxtools`). |
 | `-m 22000` | Modo de hash do hashcat correspondente a handshakes WPA/WPA2 (EAPOL) e PMKID. |
+---
 
 > 💡 **Alternativa citada no material do docente:** o `pyrit` também realiza ataques de dicionário acelerados por GPU (`pyrit -r chavewpa.cap -i wordlist.txt attack_passthrough`), porém está descontinuado e pode não estar disponível nas versões mais recentes do Kali — prefira o `hashcat` como ferramenta principal desta etapa.
 
@@ -264,28 +259,24 @@ hashcat -m 22000 chavewpa.22000 wordlist-laboratorio-expandida.txt
 |---|---|
 | 1 | Arquivo `.22000` gerado sem erros pelo `hcxpcapngtool`. |
 | 2 | `hashcat` retorna a senha em texto claro ao final da linha correspondente ao handshake (`Status: Cracked`). |
-
 ---
 
 ## 09 - Ataque Complementar — PMKID (sem handshake completo)
 
 Em alguns APs, é possível obter o **PMKID** diretamente do primeiro pacote EAPOL enviado pelo roteador, **sem precisar desautenticar nenhum cliente** nem aguardar um handshake completo — útil quando não há clientes conectados no momento do teste.
 
-### 🔧 Procedimento
-
 ```bash
 # Capturar o PMKID (não requer cliente associado nem deauth)
-hcxdumptool -i wlan0mon -o captura.pcapng --enable_status=1
+sudo hcxdumptool -i wlan0mon -o captura.pcapng --enable_status=1
 
 # Converter para o formato do hashcat
-hcxpcapngtool -o captura.22000 captura.pcapng
+sudo hcxpcapngtool -o captura.22000 captura.pcapng
 
 # Atacar com hashcat (modo 22000 também cobre PMKID)
-hashcat -m 22000 captura.22000 wordlist-laboratorio-expandida.txt
+sudo hashcat -m 22000 captura.22000 wordlist-laboratorio-expandida.txt
 ```
 
 > 💡 **Quando usar:** este método é um complemento útil quando o AP não possui clientes ativos no momento do teste — nem todo AP é vulnerável a esse tipo de extração, então trate como uma alternativa, não substituto, do fluxo principal (passos 04-08).
-
 ---
 
 ## 10 - Validação e Preenchimento do Relatório
@@ -298,6 +289,7 @@ hashcat -m 22000 captura.22000 wordlist-laboratorio-expandida.txt
 | 2 | Registrar no relatório: BSSID, ESSID, canal, protocolo (WPA ou WPA2), cifra (AES ou AES+TKIP), ferramenta utilizada (aircrack-ng ou hashcat), tempo total e senha descoberta. |
 | 3 | Comparar o tempo de quebra entre a cifra **AES pura** e o modo **AES+TKIP** — a expectativa é que **não haja diferença relevante**, já que o ataque mira a chave PSK, não a cifra dos dados. Discutir esse ponto em grupo. |
 | 4 | Comparar o tempo total desta aula com o tempo gasto no WEP (Aula 06), discutindo por que o WPA/WPA2 é considerado mais seguro mesmo sendo "quebrável" por dicionário. |
+---
 
 ## ✅ Checklist Final da Aula
 
@@ -313,7 +305,6 @@ hashcat -m 22000 captura.22000 wordlist-laboratorio-expandida.txt
 - [ ] Senha PSK descoberta e conexão validada
 - [ ] Teste repetido nos dois cenários de cifra (AES e AES+TKIP) e resultados comparados
 - [ ] Relatório do grupo preenchido com todos os dados da tabela acima
-
 ---
 
 ## 🗺️ Roteiro da Próxima Aula — WPA3
@@ -321,6 +312,7 @@ hashcat -m 22000 captura.22000 wordlist-laboratorio-expandida.txt
 | Aula | Protocolo | Técnica principal | Ferramentas |
 |---|---|---|---|
 | **09** | WPA3-Personal (SAE) | Explicar por que o handshake tradicional (4-way) **não é suficiente** contra **SAE/Dragonfly** — o protocolo é resistente a ataques offline de dicionário por design (cada tentativa exige interação com o AP, ao contrário do WPA2). Abordar vetores residuais: downgrade para WPA2 em modo misto (WPA2/WPA3-Transition), possíveis side-channel attacks (ex.: Dragonblood, dependendo da atualidade do firmware) | Discussão teórica + testes práticos limitados em modo misto WPA2/WPA3, já que um ataque de dicionário offline direto não se aplica ao SAE puro |
+---
 
 > 💡 **Observação didática importante para a Aula 09:** diferente das aulas anteriores, o WPA3 puro **não pode ser atacado com o mesmo fluxo de captura de handshake + dicionário**. O roteiro dessa aula deverá ter caráter mais **conceitual/demonstrativo**, focando em mostrar aos alunos *por que* a técnica não funciona e explorando apenas os vetores residuais conhecidos (modo de transição, implementações vulneráveis). Se os APs do laboratório (Archer C50 e EC220-G5) não suportarem WPA3 nativamente, será necessário avaliar hardware alternativo ou tratar o tema de forma exclusivamente teórica.
 
