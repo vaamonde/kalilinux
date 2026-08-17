@@ -4,23 +4,23 @@
 > **Aula:** 06 — Habilitação da Antena, Modo Monitor e Quebra de Senha WEP
 > **Equipamentos homologados:** TP-Link Archer C50 (W) e TP-Link Archer EC220-G5 (configurados em **WEP** pelos alunos)
 > **Estação de ataque:** Kali Linux + placa de rede wireless compatível com modo monitor/injeção
-
 ---
 
 ## ℹ️ Informações do Documento
 
 | Campo | Descrição |
-|---|---|
+|-------|-----------|
 | **Autor** | Robson Vaamonde |
 | **Data de criação** | 22/07/2026 |
-| **Data de atualização** | 16/08/2026 |
-| **Versão** | 0.02 |
+| **Data de atualização** | 17/08/2026 |
+| **Versão** | 0.03 |
 | **Equipamentos testados** | Archer C50 (W) e Archer EC220-G5 |
+---
 
 ### 🔗 Links do Autor
 
 | Canal | Link |
-|---|---|
+|-------|------|
 | Procedimentos em TI | http://procedimentosemti.com.br |
 | Bora para Prática | http://boraparapratica.com.br |
 | Site pessoal | http://vaamonde.com.br |
@@ -55,24 +55,37 @@
 
 ## 01 - Preparação do Ambiente e da Antena
 
-### 🔧 Procedimento
+```bash
+# Criando a Chave WEP de 64 bits (40 bits secretos) — 10 caracteres hex
+# opções do comando openssl: rand (Generate pseudo-random bytes), -hex (Hexadecimal Output)
+openssl rand -hex 5
+
+# Criando a Chave WEP de 128 bits (104 bits secretos) — 26 caracteres hex
+# opções do comando openssl: rand (Generate pseudo-random bytes), -hex (Hexadecimal Output)
+openssl rand -hex 13
+
+# Criando a Chave WEP de 152 bits (128 bits secretos) — 32 caracteres hex
+# opções do comando openssl: rand (Generate pseudo-random bytes), -hex (Hexadecimal Output)
+openssl rand -hex 16
+```
+
 
 | Passo | Ação |
-|---|---|
+|-------|------|
 | 1 | Conectar a placa/antena wireless externa (ex.: Alfa AWUS036ACH ou similar) compatível com **modo monitor e injeção de pacotes** na porta USB da estação Kali Linux. |
 | 2 | Verificar se a placa foi reconhecida pelo sistema. |
 | 3 | Posicionar a antena próxima ao AP do grupo, evitando interferência de outros grupos no mesmo laboratório. |
 
 ```bash
-# Verificar se a interface wireless foi reconhecida
+# Verificando se a interface wireless foi reconhecida no Linux
 sudo iwconfig
 
-# Verificar detalhes da placa (fabricante/chipset)
+# Verificando detalhes da placa de rede sem-fio (fabricante/chipset)
 sudo lsusb
 ```
 
 | Campo | Valor esperado | Descrição |
-|---|---|---|
+|-------|----------------|-----------|
 | Interface | `wlan0` (ou `wlan1`) | Nome da interface de rede sem-fio reconhecida pelo Kali. |
 | Chipset compatível | Atheros, Realtek RTL88xx, Ralink | Chipsets recomendados por suportarem modo monitor e injeção de pacotes nativamente no aircrack-ng suite. |
 
@@ -81,17 +94,15 @@ sudo lsusb
 ### ✅ Testes de Validação
 
 | # | Teste |
-|---|---|
+|---|-------|
 | 1 | Comando `iwconfig` lista a interface `wlan0` sem erros. |
 | 2 | Comando `lsusb` reconhece o chipset da antena externa. |
 ---
 
 ## 02 - Habilitando o Modo Monitor
 
-### 🔧 Procedimento
-
 | Passo | Ação |
-|---|---|
+|---|----------|
 | 1 | Encerrar processos que possam interferir na captura (`NetworkManager`, `wpa_supplicant`). |
 | 2 | Colocar a interface em modo monitor com o **airmon-ng**. |
 ---
@@ -117,24 +128,22 @@ sudo iwconfig
 Isso cria a interface virtual **`wlan1mon`**, usada em todos os passos seguintes.
 
 | Campo | Descrição |
-|---|---|
+|-------|-----------|
 | `wlan1mon` | Interface virtual em modo monitor, capaz de capturar todos os quadros 802.11 no ar (Beacon Frames, Probe Requests, Data), independentemente de estarem endereçados à sua placa. |
 ---
 
 ### ✅ Testes de Validação
 
 | # | Teste |
-|---|---|
+|---|-------|
 | 1 | `iwconfig` exibe `wlan1mon` com **Mode:Monitor**. |
 | 2 | Nenhum processo do NetworkManager reaparece interferindo na interface (checar com `airmon-ng check`). |
 ---
 
 ## 03 - Reconhecimento das Redes (Wardriving Local)
 
-### 🔧 Procedimento
-
 | Passo | Ação |
-|---|---|
+|-------|------|
 | 1 | Rodar o **airodump-ng** sem filtro para identificar o BSSID, canal e tipo de criptografia do AP do grupo. |
 ---
 
@@ -144,7 +153,7 @@ sudo airodump-ng wlan1mon
 ```
 
 | Campo | Descrição |
-|---|---|
+|-------|-----------|
 | **BSSID** | Endereço MAC do Access Point — identificador único necessário para os próximos comandos. |
 | **CH** | Canal em que o AP está operando (ex.: 1, 6, 11 em 2.4 GHz). |
 | **ENC / CIPHER / AUTH** | Tipo de criptografia detectado — deve aparecer como **`WEP`** para este roteiro. |
@@ -157,14 +166,12 @@ sudo airodump-ng wlan1mon
 ### ✅ Testes de Validação
 
 | # | Teste |
-|---|---|
+|---|-------|
 | 1 | O AP do grupo aparece na varredura com **ENC = WEP**. |
 | 2 | BSSID e canal do AP foram anotados corretamente. |
 ---
 
 ## 04 - Captura Direcionada de Pacotes
-
-### 🔧 Procedimento
 
 Com o BSSID e o canal identificados, fixar a captura apenas no AP-alvo e gravar os pacotes em arquivo (necessário para a criptoanálise posterior).
 
@@ -176,7 +183,7 @@ sudo airodump-ng -c <CANAL> --bssid <BSSID_DO_AP_WEP> -w chavewep wlan1mon
 ```
 
 | Parâmetro | Descrição |
-|---|---|
+|-----------|-----------|
 | `-c` | Fixa a captura no canal específico do AP-alvo, evitando ruído de outras redes/canais. |
 | `--bssid` | Filtra a captura apenas para o BSSID informado, ignorando tráfego de outros APs. |
 | `-w chavewep` | Define o prefixo dos arquivos de captura gravados em disco (ex.: `chavewep-01.cap`), que serão usados posteriormente pelo aircrack-ng. |
@@ -191,10 +198,8 @@ sudo airodump-ng -c <CANAL> --bssid <BSSID_DO_AP_WEP> -w chavewep wlan1mon
 
 Em redes ociosas, o número de pacotes cresce muito devagar. Para acelerar a coleta de vetores de inicialização (IVs), utiliza-se o **aireplay-ng** para reinjetar requisições ARP capturadas, forçando o AP a gerar novos pacotes criptografados continuamente.
 
-### 🔧 Procedimento
-
 | Passo | Ação |
-|---|---|
+|-------|------|
 | 1 | Abrir um **segundo terminal**, mantendo o `airodump-ng` do passo anterior em execução. |
 | 2 | Rodar o ataque de reinjeção ARP (tipo `-3`). |
 ---
@@ -208,7 +213,7 @@ sudo aireplay-ng -3 -b <BSSID_DO_AP> -h <MAC_DO_CLIENTE_STATION> wlan1mon
 ```
 
 | Parâmetro | Descrição |
-|---|---|
+|-----------|-----------|
 | `-3` | Tipo de ataque: **ARP Request Replay** — captura um pacote ARP e o reinjeta repetidamente na rede. |
 | `-b` | Endereço MAC (BSSID) do roteador-alvo. |
 | `-h` | Endereço MAC de um cliente (Station) associado ao AP, capturado na varredura do passo 03 — necessário para forjar os pacotes com um MAC de origem "válido" para o AP. |
@@ -218,17 +223,21 @@ sudo aireplay-ng -3 -b <BSSID_DO_AP> -h <MAC_DO_CLIENTE_STATION> wlan1mon
 ⚠️ **Sem cliente associado (STATION vazio)?** Utilize primeiro um ataque de autenticação falsa para se associar ao AP antes da reinjeção: `-1` realiza uma autenticação falsa (*fake authentication*), permitindo que a própria placa atacante seja aceita como cliente pelo AP mesmo sem conhecer a senha.
 
 ```bash
-# Forçando uma associação falsa (Fake Authentication) no Access Point
+# Verificando o endereço MAC Address da Placa de Rede Sem-Fio em Modo Monitor
+# opção do comando macchanger: -s (Prints the current MAC)
+sudo macchanger -s wlan1mon
+
+# Forçando uma associação falsa (Fake Authentication) no Access Point Alvo
 # opções do comando aireplay-ng: -1 (The fake authentication attack allows you to perform the two types
 # of WEP authentication (Open System and Shared Key) plus  associate  with the access point (AP).), 
 # -a (Set Access Point MAC address), -h (Set source MAC address)
-sudo aireplay-ng -1 0 -a <BSSID_DO_AP> -h <MAC_DA_SUA_PLACA_DE_REDE> wlan1mon
+sudo aireplay-ng -1 0 -a <BSSID_DO_AP> -h <MAC_DA_SUA_PLACA_DE_REDE_SEM-FIO> wlan1mon
 ```
 
 ### ✅ Testes de Validação
 
 | # | Teste |
-|---|---|
+|---|-------|
 | 1 | No terminal do `airodump-ng`, o campo **`#Data`** passa a crescer rapidamente (centenas/milhares de pacotes por minuto). |
 | 2 | O terminal do `aireplay-ng` exibe contagem crescente de **ARP requests enviados/recebidos**. |
 ---
@@ -238,9 +247,7 @@ sudo aireplay-ng -1 0 -a <BSSID_DO_AP> -h <MAC_DA_SUA_PLACA_DE_REDE> wlan1mon
 
 ## 06 - Quebra da Chave WEP com Criptoanálise
 
-Com os pacotes suficientes capturados no arquivo `.cap`, aplica-se o método estatístico de criptoanálise (ataque PTW/FMS) do **aircrack-ng** — diferente do WPA/WPA2, o WEP **não depende de dicionário**, e sim da quantidade de IVs coletados.
-
-### 🔧 Procedimento
+Com os pacotes suficientes capturados no arquivo `.cap`, aplica-se o método estatístico de criptoanálise (ataque PTW/FMS) do **aircrack-ng** — diferente do WPA/WPA2, o WEP **não depende de dicionário**, e sim da quantidade de IVs (Initialization Vector - Vetor de Inicialização) coletados.
 
 ```bash
 # Forçando uma quebra de senha WEP do Access Point utilizando o Dump das chaves capturadas
@@ -249,14 +256,14 @@ sudo aircrack-ng -b <BSSID_DO_AP> chavewep-01.cap
 ```
 
 | Parâmetro | Descrição |
-|---|---|
+|-----------|-----------|
 | `-b` | Filtra a análise apenas para o BSSID do AP-alvo, caso o arquivo `.cap` contenha pacotes de mais de uma rede. |
 | `chavewep-01.cap` | Arquivo de captura gerado pelo `airodump-ng` no passo 04 (o sufixo numérico é criado automaticamente). |
 
 ### ✅ Resultado Esperado
 
 | Situação | Ação |
-|---|---|
+|----------|------|
 | ✅ `KEY FOUND! [ XX:XX:XX:XX:XX ]` | Chave WEP quebrada com sucesso — anotar a senha encontrada (em hexadecimal ou ASCII) no relatório do grupo. |
 | ❌ Falha (poucos IVs) | Retornar ao passo 05 e continuar a reinjeção ARP até acumular mais pacotes, depois repetir o `aircrack-ng`. |
 ---
@@ -269,7 +276,7 @@ sudo aircrack-ng -b <BSSID_DO_AP> chavewep-01.cap
 ### ✅ Testes de Validação Final
 
 | # | Teste |
-|---|---|
+|---|-------|
 | 1 | Conectar um dispositivo à rede WEP do grupo usando a senha encontrada, confirmando o acesso. |
 | 2 | Registrar no relatório: BSSID, ESSID, canal, quantidade de IVs necessária e tempo total do ataque. |
 | 3 | Comparar o tempo de quebra do WEP com o tempo estimado para WPA2 (próxima aula), discutindo em grupo por que o WEP é considerado obsoleto. |
@@ -293,9 +300,9 @@ Estrutura sugerida para a continuidade do módulo, seguindo a mesma progressão 
 
 | Aula | Protocolo | Técnica principal | Ferramentas |
 |---|---|---|---|
-| **07** | WPA / WPA2-Personal | Captura de **4-way handshake** (passiva ou via desautenticação ativa) + ataque de **força bruta por dicionário** (não há atalho estatístico como no WEP) | `airmon-ng`, `airodump-ng`, `aireplay-ng -0` (deauth), `aircrack-ng -w wordlist.txt`, opcionalmente `hashcat`/`pyrit` (GPU) |
-| **08** | WPA3-Personal (SAE) | Explicar por que o handshake tradicional **não é suficiente** contra SAE/Dragonfly (resistente a ataques offline de dicionário); abordar vetores residuais (downgrade para WPA2 em modo misto, side-channel) | Discussão teórica + testes em modo misto WPA2/WPA3 |
-| **09** | WPS | Enumeração de APs com WPS ativo e ataque de PIN | `wash -i wlan1mon -s`, `airodump-ng --wps`, `reaver -i wlan1mon -b <BSSID> -K 1 -vv`, variação com `-d 302` para evitar bloqueio (*lockout*), `pixiewps` |
+| **07** | WPS | Enumeração de APs com WPS ativo e ataque de PIN | `wash -i wlan1mon -s`, `airodump-ng --wps`, `reaver -i wlan1mon -b <BSSID> -K 1 -vv`, variação com `-d 302` para evitar bloqueio (*lockout*), `pixiewps` |
+| **08** | WPA / WPA2-Personal | Captura de **4-way handshake** (passiva ou via desautenticação ativa) + ataque de **força bruta por dicionário** (não há atalho estatístico como no WEP) | `airmon-ng`, `airodump-ng`, `aireplay-ng -0` (deauth), `aircrack-ng -w wordlist.txt`, opcionalmente `hashcat`/`pyrit` (GPU) |
+| **09** | WPA3-Personal (SAE) | Explicar por que o handshake tradicional **não é suficiente** contra SAE/Dragonfly (resistente a ataques offline de dicionário); abordar vetores residuais (downgrade para WPA2 em modo misto, side-channel) | Discussão teórica + testes em modo misto WPA2/WPA3 |
 ---
 
 > 💡 **Observação didática importante:** diferente do WEP (quebrável por criptoanálise pura dos IVs), o ataque a WPA/WPA2 depende **inteiramente de um bom dicionário de senhas** — sem ele, o `aircrack-ng` não consegue recuperar a chave, mesmo capturando o handshake perfeitamente. Isso deve ser destacado aos alunos como a principal diferença conceitual entre os dois módulos.

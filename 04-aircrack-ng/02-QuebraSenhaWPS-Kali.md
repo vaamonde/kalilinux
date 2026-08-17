@@ -198,7 +198,7 @@ sudo reaver -i wlan1mon -b <BSSID_DO_AP> -c <CANAL> -vv
 
 # 05 - Ataque de PIN Conhecido com Reaver 
 
-Com o BSSID, canal e confirmação de que o WPS está desbloqueado, inicia-se o ataque de PIN conhecido para descobrir a senha WPA.
+Com o BSSID, canal e confirmação de que o WPS está desbloqueado, inicia-se o ataque de PIN conhecido para descobrir a senha WPA/WPA2.
 
 ### 🔧 Procedimento — Método Tradicional
 
