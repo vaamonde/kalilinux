@@ -1,6 +1,7 @@
 123
 123456
 teste
+admin
 senac
 senactit
 senaclapatito

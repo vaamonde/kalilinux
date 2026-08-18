@@ -169,10 +169,10 @@
 | **Rede 5.0 GHz** | 🔴 `Desabilitado (OFF)` |
 ---
 
+➡️ Clicar em **`Próximo`**
+
 > 💡 **Observação:** as redes sem fio são desabilitadas propositalmente nesta etapa para que a configuração da WLAN seja realizada manualmente, reforçando o entendimento de cada parâmetro.
 ---
-
-➡️ Clicar em **`Próximo`**
 
 ### ⏳ 07. Personalizando as Configurações Sem Fio (WLAN)
 
@@ -202,7 +202,6 @@
 ---
 
 ➡️ Clicar em **`Pular`**
-
 ---
 
 ## ✅ Checklist Final da Aula
@@ -215,3 +214,4 @@
 - [ ] Tipo de conexão WAN definido (IP Dinâmico)
 - [ ] WLAN 2.4 GHz e 5.0 GHz desabilitadas propositalmente
 - [ ] Etapa do TP-Link Cloud pulada
+---

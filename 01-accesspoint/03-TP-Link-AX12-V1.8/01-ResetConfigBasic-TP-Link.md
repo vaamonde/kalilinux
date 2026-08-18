@@ -43,7 +43,7 @@
 ### 📋 Especificações dos Equipamentos
 
 | Modelo | Padrão Wi-Fi | Velocidade | Datasheet | Manual |
-|---|---|---|---|---|
+|--------|--------------|------------|-----------|--------|
 | **TP-Link Archer AX12** | Wi-Fi 6 — 802.11ax | AX1500 | [📄 Datasheet](https://static.tp-link.com/upload/product-overview/2023/202308/20230807/ArcherAX12EUUS1.0_Datasheet_PT.pdf) | [📘 Manual de Instalação](https://static.tp-link.com/upload/manual/2023/202308/20230807/1910013387_Archer%20AX12(EU_US)1.0_UG_V1_PT.pdf) |
 ---
 
@@ -59,6 +59,7 @@
 2. Com o Access Point **ligado**, utilize um clipe ou objeto pontiagudo para pressionar o botão.
 3. Mantenha pressionado por **aproximadamente 5 a 10 segundos**, até que os LEDs do equipamento pisquem simultaneamente.
 4. Solte o botão e aguarde o reinício completo do equipamento (cerca de 1 a 2 minutos).
+---
 
 > 💡 **Dica:** após o reset, o Access Point volta a utilizar o **IP padrão de fábrica** (geralmente `192.168.0.1` ou `192.168.1.1`, dependendo do modelo) e a rede Wi-Fi padrão impressa na etiqueta do equipamento.
 ---
@@ -103,7 +104,7 @@
 | Item | Valor |
 |------|-------|
 | **Navegadores recomendados** | `Google Chrome ou Mozilla Firefox` |
-| **Endereço de acesso** | `192.168.0.1` |
+| **Endereço de acesso** | `http://192.168.0.1` |
 ---
 
 ### 🔐 02. Criando a Senha do Usuário Administrador
@@ -114,68 +115,56 @@
 | **Confirmar Senha** | `Senactit@123` |
 ---
 
+➡️ Clicar em **`Vamos Começar`**
+
 > ⚠️ **Importante:** utilize sempre senhas fortes em ambientes de produção. A senha acima é padronizada apenas para fins didáticos desta aula.
 ---
 
-### 🌎 03. Selecionando o Fuso Horário Modelo Somente TP-Link EC220-G5
+### 🌎 03. Selecione seu fuso horário
 
 | Campo | Valor |
-|---|---|
-| Fuso Horário | (UTC-03:00) Brasília |
+|-------|-------|
+| **Fuso Horário** | `(UTC-03:00) Brasília` |
 ---
 
 ➡️ Clicar em **`Próximo`**
 
-### 🌐 04. Tipo de Conexão (WAN — ISP) TP-Link EC220-G5 e C50 (W)
+### 🌐 04. Selecione o tipo de conexão
 
 | Campo | Valor |
-|---|---|
-| Tipo de Conexão | IP Dinâmico |
+|-------|-------|
+| **Tipo de Conexão** | `(ON) IP Dinâmico` |
 ---
 
 | **Valor** | **Descrição** |
 | --------- | ------------- |
 | **IP Dinâmico (DHCP)** | Obtém automaticamente o endereço IP, gateway, DNS e demais parâmetros de rede do provedor de Internet (ISP). |
 | **IP Estático** | Requer a configuração manual do endereço IP, máscara de rede, gateway e servidores DNS fornecidos pelo provedor. |
-| **PPPoE** | Utiliza autenticação por nome de usuário e senha para estabelecer a conexão com o provedor de Internet. |
-| **L2TP** | Estabelece a conexão utilizando o protocolo L2TP, normalmente exigindo servidor, usuário e senha fornecidos pelo ISP. |
-| **PPTP** | Estabelece a conexão utilizando o protocolo PPTP, exigindo endereço do servidor, usuário e senha fornecidos pelo ISP. |
+| **PPPoE** | Estabelece a conexão utilizando o protocolo PPPoE (Point-to-Point Protocol over Ethernet), utiliza autenticação por nome de usuário e senha para estabelecer a conexão com o provedor de Internet. |
+| **L2TP** | Estabelece a conexão utilizando o protocolo L2TP (Layer 2 Tunneling Protocol), normalmente exigindo servidor, usuário e senha fornecidos pelo ISP. |
+| **PPTP** | Estabelece a conexão utilizando o protocolo PPTP (Point-to-Point Tunneling Protocol), exigindo endereço do servidor, usuário e senha fornecidos pelo ISP. |
 ---
 
 ➡️ Clicar em **`Próximo`**
 
-### 🌐 05. Tipo de Conexão (WAN — ISP) Somente TP-Link C50 (W)
+### 🌐 05. IP Dinâmico
 
 | Campo | Valor |
-|---|---|
-| ID VLAN | (OFF) Habilitar |
+|-------|-------|
+| **Endereço MAC do roteador** | `Utilizar Endereço MAC Padrão (Etiqueta Roteador)` |
+| **Configurações especiais de ISP (IPTV / VLAN)** | `Perfil ISP: Nenhum` |
 ---
 
 ➡️ Clicar em **`Próximo`**
 
-### 🔧 06. Configuração do IP Dinâmico (WAN — ISP) Somente TP-Link EC220-G5
+### 🔧 06. Personalizar configurações sem fio
 
 | Campo | Valor |
-|---|---|
-| Endereço MAC do Roteador | Utilizar Endereço MAC Padrão |
----
-
-| **Valor** | **Descrição** |
-| --------- | ------------- |
-| **Nenhum** | Utiliza a configuração padrão da conexão com a Internet, sem aplicar perfis de IPTV, VLAN ou modo de ponte. |
-| **Personalizado** | Permite configurar manualmente os parâmetros de IPTV e VLAN de acordo com os requisitos do provedor de Internet (ISP). |
-| **Ponte (Bridge)** | Encaminha o tráfego diretamente para outro equipamento, como um roteador ou firewall, sem realizar roteamento ou NAT para a conexão configurada. |
----
-
-➡️ Clicar em **`Próximo`**
-
-### 📶 06. Personalizando as Configurações Sem Fio (WLAN) TP-Link EC220-G5 e C50 (W)
-
-| Configuração | Status |
-|---|---|
-| Direção de Banda (Band Steering) | 🔴 Desabilitado (OFF) |
-| Rede 2.4 GHz | 🔴 Desabilitado (OFF) |
-| Rede 5.0 GHz | 🔴 Desabilitado (OFF) |
+|-------|-------|
+| **Smart Connect** | `🔴 (OFF) Desabilitado` |
+| **2.4GHz** | `🔴 (OFF) Desabilitado` |
+| **Definir cada banda separadamente** | `🔴 (OFF) Desabilitado` |
+| **5GHz** | `🔴 (OFF) Desabilitado` |
 ---
 
 ➡️ Clicar em **`Próximo`**
@@ -183,46 +172,46 @@
 > 💡 **Nota didática:** as redes sem fio são desabilitadas propositalmente nesta etapa para que a configuração da WLAN seja realizada manualmente em uma aula posterior, reforçando o entendimento de cada parâmetro.
 ---
 
-### ⏳ 07. Personalizando as Configurações Sem Fio (WLAN) TP-Link EC220-G5 e C50 (W)
+### 📶 06. Desativar todas as redes wireless?
+
+➡️ Clicar em **`Desativar de Qualquer Maneira`**
+
+### ⏳ 07. Teste de conexão
 
 | Status |
-|---|
-| Escolha sua conexão atual para continuar:|
-| ✅ (ON) Estou usando uma conexão cabeada. |
+|--------|
+| ✅ Testando a conexão com a internet. Pode demorar alguns segundos. Por favor, espere. |
 ---
+
+### ⏳ 08. Mantenha seu roteador atualizado.
+
+| Campo |
+|-------|
+| `🔴 (OFF) Agora não` |
 
 ➡️ Clicar em **`Próximo`**
 
-### ⏳ 08. Sumário das configurações Somente TP-Link C50 (W)
-
-| Status |
-|---|
-| Tipo de Conexão de Internet: IP Dinâmico |
-| Rede Wireless 2.4GHz: Desabilitado |
-|  Rede Wireless 5GHz: Desabilitado |
----
-
-➡️ Clicar em **`Salvar`**
-
-### ⏳ 08. Conectando à Internet Somente TP-Link EC220-G5 e C50 (W)
-
-| Status |
-|---|
-| Aguardando conexão... |
-| ✅ Concluído com sucesso |
----
+### ⏳ 08. Concluído com Sucesso.
 
 ➡️ Clicar em **`Próximo`**
 
-### ☁️ 08. Serviço TP-Link Cloud Somente TP-Link EC220-G5
+### ☁️ 08. Mais uma coisa…
 
 | Ação |
-|---|
+|------|
 | **Não será utilizado** nesta aula |
 ---
 
 ➡️ Clicar em **`Pular`**
 
+### ☁️ 08. Tudo pronto e ajude-nos a melhorar!
+
+| Ação |
+|------|
+| **Não será utilizado** nesta aula |
+---
+
+➡️ Clicar em **`Pular`**
 ---
 
 ## ✅ Checklist Final da Aula
@@ -235,5 +224,4 @@
 - [ ] Tipo de conexão WAN definido (IP Dinâmico)
 - [ ] WLAN 2.4 GHz e 5.0 GHz desabilitadas propositalmente
 - [ ] Etapa do TP-Link Cloud pulada
-
-> 📌 **Próxima aula:** configuração manual da rede WAN e LAN.
+---

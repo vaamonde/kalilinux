@@ -158,10 +158,10 @@ Link Oficial do TP-Link: https://emulator.tp-link.com/Archer%20C50(BR)%206.0_Emu
 | **Rede 5.0 GHz** | 🔴 `Desabilitado (OFF)` |
 ---
 
+➡️ Clicar em **`Próximo`**
+
 > 💡 **Observação:** as redes sem fio são desabilitadas propositalmente nesta etapa para que a configuração da WLAN seja realizada manualmente, reforçando o entendimento de cada parâmetro.
 ---
-
-➡️ Clicar em **`Próximo`**
 
 ### ⏳ 07. Personalizando as Configurações Sem Fio (WLAN)
 
@@ -202,3 +202,4 @@ Link Oficial do TP-Link: https://emulator.tp-link.com/Archer%20C50(BR)%206.0_Emu
 - [ ] Senha de administrador definida
 - [ ] Tipo de conexão WAN definido (IP Dinâmico)
 - [ ] WLAN 2.4 GHz e 5.0 GHz desabilitadas propositalmente
+---
