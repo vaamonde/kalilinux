@@ -3,6 +3,7 @@
 teste
 admin
 senac
+senacsp
 senactit
 senaclapatito
 senac@2026
