@@ -65,7 +65,7 @@ Antes de iniciar qualquer teste de invasão contra os protocolos de segurança w
 9. [Documentando o Cenário — Relatório de Baseline](#09---documentando-o-cenário--relatório-de-baseline)
 ---
 
-## 01 - Verificação de Hardware — Notebook e Antenas
+## 01 - Verificação de Hardware — Notebook e Antenas On-Board Notebook Dell
 
 | Campo | Descrição |
 |-------|-----------|
@@ -255,7 +255,7 @@ sudo airodump-ng wlan1
 | 3 | Os APs de outros grupos do laboratório também aparecem na varredura, permitindo avaliar o nível de congestionamento do ambiente. |
 ---
 
-## 06 - Identificação de Clientes Conectados (STATION)
+## 06 - Identificação de Clientes Conectados (STATION) Gerando o arquivo de Dump
 
 Na mesma execução do `airodump-ng`, observe a seção inferior da tela (**Station**):
 
@@ -337,11 +337,6 @@ sudo airodump-ng -c <CANAL> --bssid <BSSID_DO_AP> wlan1
 ---
 
 ```bash
-# Instalando o Kismet em Modo Gráfico no Parrot
-# opções do comando apt: -y (Automatic yes to prompts), install (This option is followed by one or more 
-# packages desired for installation.)
-sudo apt install -y kismet kismet-plugins kismet-logtools
-
 # Analisando em modo gráfico as Redes Sem-Fio no Kismet via Navegador
 # opção do comando kismet: -c (Use te specification data source)
 sudo kismet -c wlan1

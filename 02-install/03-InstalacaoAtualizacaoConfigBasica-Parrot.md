@@ -241,6 +241,11 @@ sudo reboot
 # packages desired for installation.)
 sudo apt install -y curl wget git vim net-tools wireless-tools inxi
 
+# Instalando o Kismet em Modo Gráfico no Parrot
+# opções do comando apt: -y (Automatic yes to prompts), install (This option is followed by one or more 
+# packages desired for installation.)
+sudo apt install -y kismet kismet-plugins kismet-logtools
+
 # Configurando o Fuso Horário da America / São Paulo
 # opção do comando timedatectl: set-timezone (Set the system time zone to the specified value)
 sudo timedatectl set-timezone "America/Sao_Paulo"
