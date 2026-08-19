@@ -331,7 +331,7 @@ Essas antenas é reconhecidas **nativamente** pelo kernel do Parrot, sem necessi
 # ^GRUB_CMDLINE_LINUX="\(.*\)" = Captura o conteúdo atual entre aspas da variável (ex.: quiet splash).
 # \1 = Reinsere o conteúdo capturado (preserva quiet splash).
 # net.ifnames=0 biosdevname=0 = Adiciona as novas opções ao final, mantendo o que já existia.
-sudo sed -i 's/^GRUB_CMDLINE_LINUX="\(.*\)"/GRUB_CMDLINE_LINUX="\1 net.ifnames=0 biosdevname=0"/' /etc/default/grub
+sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="\(.*\)"/GRUB_CMDLINE_LINUX_DEFAULT="\1 net.ifnames=0 biosdevname=0"/' /etc/default/grub
 
 # Atualizando o GRUB com as novas opções
 sudo update-grub
