@@ -2,7 +2,7 @@
 
 > **Módulo:** Redes Sem-Fio — Reconhecimento Passivo (Pré-Pentest)
 > **Aula:** Verificação de Hardware, Conceitos de Análise do Ambiente e Reconhecimento de APs com Kali Linux
-> **Equipamentos homologados:** Notebook Dell Inspiron + Antenas USB Realtek RTL8188EUS e Qualcomm Atheros AR9271
+> **Equipamentos homologados:** Notebook Dell Inspiron / Latitude + Antenas USB Realtek RTL8188EUS e Qualcomm Atheros AR9271
 > **Pré-requisito:** Aula de Instalação/Configuração Básica do Kali Linux concluída (drivers das antenas já reconhecidos)
 ---
 
@@ -12,9 +12,9 @@
 |---|---|
 | **Autor** | Robson Vaamonde |
 | **Data de criação** | 01/08/2026 |
-| **Data de atualização** | 17/08/2026 |
+| **Data de atualização** | 19/08/2026 |
 | **Versão** | 0.03 |
-| **Equipamentos testados** | Notebook Dell Inspiron, Antena Realtek RTL8188EUS, Antena Qualcomm Atheros AR9271 |
+| **Equipamentos testados** | Notebook Dell Inspiron/Latitude, Antena Realtek RTL8188EUS, Antena Qualcomm Atheros AR9271 |
 ---
 
 ### 🔗 Links do Autor
@@ -108,8 +108,8 @@ sudo lsusb
 ### 📶 Checklist de Hardware por Interface
 
 | Interface | Origem | Suporta Modo Monitor? | Observação |
-|---|---|---|---|
-| `wlan0` (ou similar) | Placa Wi-Fi interna do notebook | ⚠️ Depende do chipset — normalmente **não recomendada** para pentest | Usar apenas para conexão administrativa (ex.: acessar a interface web do AP), nunca como interface de ataque. |
+|-----------|--------|-----------------------|------------|
+| `wlan0, wlan1` (ou similar) | Placa Wi-Fi interna do notebook | ⚠️ Depende do chipset — normalmente **não recomendada** para pentest | Usar apenas para conexão administrativa (ex.: acessar a interface web do AP), nunca como interface de ataque. |
 | Antena USB Realtek `RTL8188EUS` | Externa | ✅ Sim, com driver `realtek-rtl8188eus-dkms` | Confirmar que o driver DKMS (e não o `r8188eu` genérico) está carregado — ver Aula de instalação do Kali, item 06.2. |
 | Antena USB Atheros `AR9271` | Externa | ✅ Sim, nativamente (`ath9k_htc`) | Não exige driver adicional. |
 ---
@@ -119,7 +119,7 @@ sudo lsusb
 ### ✅ Testes de Validação
 
 | # | Teste |
-|---|---|
+|---|-------|
 | 1 | `iwconfig`/`iw dev` lista a placa interna **e** ao menos uma antena externa, com nomes de interface distintos. |
 | 2 | `lsusb` reconhece o chipset da(s) antena(s) externa(s) conectada(s). |
 | 3 | Cada interface identificada e anotada no relatório do grupo (ex.: `wlan1 = Antena Atheros AR9271`). |
@@ -173,7 +173,7 @@ sudo iwlist wlan0 scan | grep -E "ESSID|Address|Channel|Signal"
 ### ✅ Testes de Validação
 
 | # | Teste |
-|---|---|
+|---|-------|
 | 1 | O AP do grupo aparece na listagem do `nmcli` com o SSID esperado (ex.: `grupo-0x-2.4`). |
 | 2 | Canal e nível de sinal exibidos são compatíveis com o que foi configurado no AP (ver Aula de configuração wireless). |
 ---
@@ -206,7 +206,7 @@ sudo iwconfig
 
 | Campo | Descrição |
 |-------|-----------|
-| `wlan1mon` (ou similar) | Interface virtual criada em modo monitor, usada em todos os comandos de reconhecimento e, posteriormente, nas aulas de exploração. |
+| `wlan1` (ou similar) | Interface virtual criada em modo monitor, usada em todos os comandos de reconhecimento e, posteriormente, nas aulas de exploração. |
 ---
 
 > ⚠️ **Importante:** nesta aula, o modo monitor é usado **apenas para observação** (reconhecimento passivo) — nenhum pacote de desautenticação, injeção ou ataque é enviado. O objetivo é exclusivamente mapear o ambiente.
@@ -223,7 +223,7 @@ sudo iwconfig
 
 ```bash
 # Escaneamento da rede utilizando o Airodump-NG em busca de Access Point e End Points
-sudo airodump-ng wlan1mon
+sudo airodump-ng wlan1
 ```
 
 > ⚠️ Deixe o comando rodando por **alguns minutos**, observando a lista de APs (parte superior) e de clientes (parte inferior), para sair do comando pressione: **Ctrl + C**
@@ -262,7 +262,7 @@ Na mesma execução do `airodump-ng`, observe a seção inferior da tela (**Stat
 ```bash
 # Escaneamento da rede utilizando o Airodump-NG em busca de Access Point e End Points
 # opção do comando airodump-ng: -w (Is the dump file prefix to use)
-sudo airodump-ng wlan1mon -w dump_wlan1mon
+sudo airodump-ng wlan1 -w dump_wlan1
 
 # Listando os arquivos de captura dos Beacons e Dados do Airodump-NG
 # opções do comando ls: -l (long listing format), -h (human readable)
@@ -271,11 +271,11 @@ ls -lh
 
 | Extensão | Nome de exemplo | O que contém |
 |----------|-----------------|--------------|
-| `.cap` | `dump_wlan1mon-01.cap` | Captura bruta dos pacotes 802.11 no formato **pcap**, lida por `aircrack-ng`, `Wireshark`, `tcpdump`, `airdecap-ng` etc. É o arquivo mais importante — usado para análise de tráfego e quebra de chaves (WEP/WPA/WPA2). |
-| `.csv` | `dump_wlan1mon-01.csv` | Relatório em **texto separado por vírgulas** com a lista de APs (BSSID, canal, ENC, ESSID, PWR) e a lista de clientes (STATION) — fácil de abrir em planilha (Excel/LibreOffice) para documentar o baseline. |
-| `.kismet.csv` | `dump_wlan1mon-01.kismet.csv` | Mesmo tipo de relatório do `.csv`, mas em um **formato compatível com o Kismet**, outro sniffer wireless — permite importar a captura do `airodump-ng` em ferramentas que leem esse padrão. |
-| `.kismet.netxml` | `dump_wlan1mon-01.kismet.netxml` | Versão do relatório em **XML**, também no formato do Kismet — usada por ferramentas de análise/visualização que consomem XML em vez de CSV. |
-| `.log.csv` | `dump_wlan1mon-01.log.csv` | **Log de GPS** dos pontos de acesso (coordenadas, se houver um receptor GPS conectado) — normalmente vazio/sem dados relevantes em laboratório sem GPS. |
+| `.cap` | `dump_wlan1-01.cap` | Captura bruta dos pacotes 802.11 no formato **pcap**, lida por `aircrack-ng`, `Wireshark`, `tcpdump`, `airdecap-ng` etc. É o arquivo mais importante — usado para análise de tráfego e quebra de chaves (WEP/WPA/WPA2). |
+| `.csv` | `dump_wlan1-01.csv` | Relatório em **texto separado por vírgulas** com a lista de APs (BSSID, canal, ENC, ESSID, PWR) e a lista de clientes (STATION) — fácil de abrir em planilha (Excel/LibreOffice) para documentar o baseline. |
+| `.kismet.csv` | `dump_wlan1-01.kismet.csv` | Mesmo tipo de relatório do `.csv`, mas em um **formato compatível com o Kismet**, outro sniffer wireless — permite importar a captura do `airodump-ng` em ferramentas que leem esse padrão. |
+| `.kismet.netxml` | `dump_wlan1-01.kismet.netxml` | Versão do relatório em **XML**, também no formato do Kismet — usada por ferramentas de análise/visualização que consomem XML em vez de CSV. |
+| `.log.csv` | `dump_wlan1-01.log.csv` | **Log de GPS** dos pontos de acesso (coordenadas, se houver um receptor GPS conectado) — normalmente vazio/sem dados relevantes em laboratório sem GPS. |
 ---
 
 | Campo | Descrição |
@@ -292,7 +292,7 @@ ls -lh
 ### ✅ Testes de Validação
 
 | # | Teste |
-|---|---|
+|---|-------|
 | 1 | Ao menos um dispositivo cliente (ex.: smartphone de teste) aparece associado ao BSSID do AP do grupo. |
 | 2 | O campo `Probes` é identificado e discutido em grupo (o que ele revela sobre o histórico de conexões de um dispositivo). |
 ---
@@ -301,9 +301,9 @@ ls -lh
 
 ```bash
 # Focar a captura em um único AP/canal para observar o PWR com mais estabilidade
-# opção do comando airodump-ng: -c ( Indicates the frequencies to listen to), --bssid (t will only
+# opção do comando airodump-ng: -c ( ndicates the frequencies to listen to), --bssid (t will only
 # show networks, matching the given bssid)
-sudo airodump-ng -c <CANAL> --bssid <BSSID_DO_AP> wlan1mon
+sudo airodump-ng -c <CANAL> --bssid <BSSID_DO_AP> wlan1
 ```
 
 | Faixa de PWR (dBm) | Qualidade aproximada | Descrição |
@@ -319,7 +319,7 @@ sudo airodump-ng -c <CANAL> --bssid <BSSID_DO_AP> wlan1mon
 ### ✅ Testes de Validação
 
 | # | Teste |
-|---|---|
+|---|-------|
 | 1 | O grupo identifica a posição no laboratório onde o `PWR` do AP-alvo é mais forte (mais próximo de `0`). |
 | 2 | A posição de melhor sinal é registrada no relatório, para ser usada como referência nas próximas aulas. |
 ---
@@ -337,12 +337,19 @@ sudo airodump-ng -c <CANAL> --bssid <BSSID_DO_AP> wlan1mon
 ---
 
 ```bash
+# Instalando o Kismet em Modo Gráfico no Parrot
+# opções do comando apt: -y (Automatic yes to prompts), install (This option is followed by one or more 
+# packages desired for installation.)
+sudo apt install -y kismet kismet-plugins kismet-logtools
+
 # Analisando em modo gráfico as Redes Sem-Fio no Kismet via Navegador
 # opção do comando kismet: -c (Use te specification data source)
-sudo kismet -c wlan1mon
+sudo kismet -c wlan1
 ```
 
 > 💡 **Dica:** abrir o navegador no endereço: `http://localhost:2501`
+>
+> **Observação:** Primeiro acesso fazer a criação do Usuário `User name`, Senha e Confirmação `Password and Confirm`, usar o usuário: **senac** com senha: **Senactit@123**
 
 ## 09 - Documentando o Cenário — Relatório de Baseline
 

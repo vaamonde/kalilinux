@@ -2,7 +2,7 @@
 
 > **Módulo:** Redes Sem-Fio — Preparação do Ambiente de Ataque (Parrot Security OS)
 > **Aula:** 02c — Instalação, Atualização e Configuração Básica do Parrot Security OS
-> **Equipamento base (notebook):** Dell Inspiron
+> **Equipamento base (notebook):** Dell Inspiron e Latitude
 > **Antenas Wi-Fi externas homologadas:**
 > - USB Realtek — chipset **RTL8188EUS**, driver `r8188eu` / DKMS `aircrack-ng/rtl8188eus`, 802.11n
 > - USB Qualcomm Atheros — chipset **AR9271**, driver `ath9k_htc`, 802.11n
@@ -14,10 +14,10 @@
 |-------|-----------|
 | **Autor** | Robson Vaamonde |
 | **Data de criação** | 05/08/2026 |
-| **Data de atualização** | 17/08/2026 |
+| **Data de atualização** | 19/08/2026 |
 | **Versão** | 0.02 |
 | **Versão do Parrot testada** | Parrot Security OS **7.3** — instalador Calamares (base **Parrot 7.2 "Echo"**), Xfce |
-| **Notebook testado** | Dell Inspiron (instalação bare metal, UEFI) |
+| **Notebook testado** | Dell Inspiron e Latitude (instalação bare metal, UEFI) |
 | **Antenas testadas** | Realtek RTL8188EUS e Qualcomm Atheros AR9271 |
 | **Motivo da inclusão desta distro** | Alternativa ao Kali Linux (Aula 02) e ao Linux Mint (Aula 02b) para os grupos/notebooks em que o Parrot Security já é a distribuição padrão fornecida pela instituição — mantém as mesmas ferramentas de pentest wireless usadas nas Aulas 06-10 (`04-aircrack-ng/*`), a maioria já **pré-instalada** na edição Security. |
 
@@ -60,15 +60,15 @@
 
 ## 01 - Requisitos e Especificações do Ambiente
 
-### 💻 Notebook Dell Inspiron
+### 💻 Notebook Dell Inspiron e Latitude
 
 | Item | Valor |
 |------|-------|
-| Modelo | Dell Inspiron (linha padrão do laboratório) |
-| Firmware | UEFI (recomendado desabilitar Secure Boot para simplificar o uso de módulos DKMS de terceiros) |
-| Espaço em disco | Mínimo 40 GB livres (recomendado 60 GB+) |
-| Memória RAM | Mínimo 4 GB (recomendado 8 GB+) |
-| Mídia de instalação | Pendrive USB ≥ 8 GB |
+| **Modelo** | `Dell Inspiron e Latitude` (linha padrão do laboratório) |
+| **Firmware** | `UEFI` (recomendado desabilitar `Secure Boot` para simplificar o uso de módulos DKMS de terceiros) |
+| **Espaço em disco** | `Mínimo 40 GB livres` (recomendado 60 GB+) |
+| **Memória RAM** | `Mínimo 4 GB` (recomendado 8 GB+) |
+| **Mídia de instalação** | `Pendrive USB ≥ 8 GB` |
 ---
 
 > ⚠️ **Atenção:** assim como no Kali (Aula 02), em alguns modelos Dell Inspiron o Secure Boot bloqueia o carregamento de módulos de kernel não assinados (drivers DKMS das antenas externas). Recomenda-se **desabilitar o Secure Boot na BIOS/UEFI** antes de seguir para a Aula 03 (uso das antenas).
@@ -76,15 +76,15 @@
 ### 📶 Antenas Wi-Fi Externas
 
 | Antena | Chipset | Driver no Parrot | Suporta Modo Monitor / Injeção |
-|---|---|---|---|
-| USB Realtek | `RTL8188EUS` | `r8188eu` (in-kernel) ou DKMS `aircrack-ng/rtl8188eus` (compilação manual, ver item 07) | ✅ Sim, com o driver DKMS |
-| USB Qualcomm Atheros | `AR9271` | `ath9k_htc` (in-kernel, nativo) | ✅ Sim, nativamente, sem necessidade de driver adicional |
+|--------|---------|------------------|--------------------------------|
+| **USB Realtek** | `RTL8188EUS` | `r8188eu` (in-kernel) ou DKMS `aircrack-ng/rtl8188eus` (compilação manual, ver item 07) | ✅ Sim, com o driver DKMS |
+| **USB Qualcomm Atheros** | `AR9271` | `ath9k_htc` (in-kernel, nativo) | ✅ Sim, nativamente, sem necessidade de driver adicional |
 ---
 
 > 💡 **Dica:** assim como no Kali, a antena **AR9271 (Atheros)** é reconhecida "de fábrica" pelo kernel do Parrot, sem instalação extra. A **RTL8188EUS (Realtek)** normalmente é reconhecida pelo driver genérico `r8188eu`, mas esse driver **não garante bom suporte a modo monitor e injeção de pacotes** — recomenda-se o driver DKMS mantido pela própria equipe do aircrack-ng (item 07).
 ---
 
-## 02 - Download e Verificação da Imagem ISO
+## 02 - Download e Verificação da Imagem ISO do Parrot
 
 | Passo | Ação |
 |-------|------|
@@ -124,9 +124,9 @@ sudo dd if=Parrot-security-7.3_amd64.iso of=/dev/sdX bs=4M status=progress conv=
 > ⚠️ **Atenção:** confirme corretamente o dispositivo (`/dev/sdX`) com `lsblk` antes de rodar o `dd` — um erro aqui pode apagar o disco errado.
 ---
 
-## 03 - Instalação do Parrot Security OS 7.3 (Calamares) no Notebook Dell Inspiron
+## 03 - Instalação do Parrot Security OS 7.3 (Calamares) no Notebook Dell Inspiron e Latitude 
 
-Diferente do instalador do Kali (Debian Installer, em modo texto/gráfico próprio), o Parrot utiliza o **Calamares**, um instalador gráfico que roda a partir do próprio ambiente live (Xfce) do pendrive. O procedimento abaixo documenta, tela por tela, a instalação realizada no notebook Dell Inspiron do laboratório.
+Diferente do instalador do Kali (Debian Installer, em modo texto/gráfico próprio), o Parrot utiliza o **Calamares**, um instalador gráfico que roda a partir do próprio ambiente live (Xfce) do pendrive. O procedimento abaixo documenta, tela por tela, a instalação realizada no notebook Dell Inspiron e Latitude do laboratório.
 
 ### 🔧 Procedimento (Instalação Gráfica Padrão)
 
@@ -175,19 +175,43 @@ Diferente do instalador do Kali (Debian Installer, em modo texto/gráfico própr
 O Parrot é baseado em **Debian testing**, com repositórios próprios (`deb.parrot.sh`). Assim como no Kali, a atualização completa é obrigatória logo após a instalação, antes de qualquer uso em laboratório.
 
 ```bash
-# Conferir a versão instalada e o codename da base
-sudo cat /etc/os-release
+# Conferir a versão instalada e o codename da base do Parrot
+# opção do comando cat: -n (number all output lines)
+sudo cat -n /etc/os-release
 
 # Conferir os repositórios ativos do Parrot
-sudo cat /etc/apt/sources.list
+# opção do comando cat: -n (number all output lines)
+sudo cat -n /etc/apt/sources.list
 
 # Atualizando as lista do Apt
+# opção do comando apt: update (Used to re-synchronize the package index files from their sources. )
 sudo apt update
 
-# Atualizando todos os softwares e o sistema operacional
+# Atualizando todos os software do Parrot
+# opções do comando apt: -y (Automatic yes to prompts), upgrade (Used to install the newest versions of all 
+# packages currently installed on the system from the sources enumerated in /etc/apt/sources.list(5).)
+sudo apt upgrade -y 
+
+# Atualizando todos os softwares e o sistema operacional do Parrot
+# opções do comando apt: -y (Automatic yes to prompts), full-upgrade (full-upgrade performs the function of 
+# upgrade but will remove currently installed packages if this is needed to upgrade the system as a whole. )
 sudo apt full-upgrade -y
 
-# Reiniciando o sistema para aplicar as mudanças
+# Atualizando a Distribuição e o Kernel do Parrot
+# opções do comando apt: -y (Automatic yes to prompts), dist-upgrade (In addition to performing the function of upgrade)
+sudo apt dist-upgrade -y
+
+# Forçando a remoção dos softwares desnecessários do Parrot
+# opções do comando apt: -y (Automatic yes to prompts), autoremove (autoremove is used to remove packages that 
+# were automatically installed to satisfy dependencies for other packages)
+sudo apt autoremove -y
+
+# Limpando todo o repositório e cache do Parrot
+# opções do comando apt: -y (Automatic yes to prompts), autoclean (Like clean, autoclean clears out the local repository
+# of retrieved package files.)
+sudo apt autoclean -y
+
+# Reiniciando o sistema para aplicar as mudanças no Parrot
 sudo reboot
 ```
 
@@ -213,18 +237,24 @@ sudo reboot
 
 ```bash
 # Instalação de pacotes extras para facilitar o reconhecimento da rede sem-fio
+# opções do comando apt: -y (Automatic yes to prompts), install (This option is followed by one or more 
+# packages desired for installation.)
 sudo apt install -y curl wget git vim net-tools wireless-tools inxi
 
 # Configurando o Fuso Horário da America / São Paulo
-sudo timedatectl set-timezone America/Sao_Paulo
+# opção do comando timedatectl: set-timezone (Set the system time zone to the specified value)
+sudo timedatectl set-timezone "America/Sao_Paulo"
 
 # Verificando o Fuso Horário, Data e Hora
+# opção do comando timedatectl: status (Show current settings of the system clock and RTC)
 sudo timedatectl status
 
 # Habilitar e iniciar o NetworkManager (gerenciamento de rede gráfico no Xfce)
-sudo systemctl status NetworkManager
+# opções do comando systemctl: enable (Enable one or more units or unit instances), start (Start (activate) one or 
+# more units specified on the command line), status (Show terse runtime status information about one or more units)
 sudo systemctl enable NetworkManager
 sudo systemctl start NetworkManager
+sudo systemctl status NetworkManager
 ```
 
 | Campo | Valor | Descrição |
@@ -249,143 +279,85 @@ Diferente do Linux Mint (Aula 02b), onde as ferramentas precisam ser instaladas 
 
 ```bash
 # Suíte aircrack-ng (airmon-ng, airodump-ng, aireplay-ng, aircrack-ng)
-sudo aircrack-ng --version
-sudo airmon-ng
+# opção do comando dpkg: --list (List packages matching given pattern)
+sudo dpkg --list aircrack-ng
 
-# Reaver, pixiewps e wash (ataques WPS — Aula 07)
-sudo reaver --help | head -n 5
-sudo wash --help | head -n 5
-sudo pixiewps --help | head -n 5
+# Reaver (wash) e pixiewps(ataques WPS — Aula 07)
+# opção do comando dpkg: --list (List packages matching given pattern)
+sudo dpkg --list reaver
+sudo dpkg --list pixiewps
 
-# hcxtools / hcxdumptool (ataque PMKID — Aula 08, item 09)
-sudo hcxdumptool --version
-sudo hcxpcapngtool --version
+# Hcxdumptool / hcxtools(ataque PMKID — Aula 08, item 09)
+# opção do comando dpkg: --list (List packages matching given pattern)
+sudo dpkg --list hcxdumptool
+sudo dpkg --list hcxtools
 
-# hashcat (aceleração por GPU/CPU — Aula 08, item 08)
-sudo hashcat --version
-sudo hashcat -I
+# Hashcat (aceleração por GPU/CPU — Aula 08, item 08)
+# opção do comando dpkg: --list (List packages matching given pattern)
+sudo dpkg --list hashcat
 
 # hydra (força bruta em WebGUI — Aula 10)
-sudo hydra -h | head -n 5
+# opção do comando dpkg: --list (List packages matching given pattern)
+sudo dpkg --list hydra
 
 # Wireshark e tcpdump (análise de tráfego)
-sudo wireshark --version
-sudo tcpdump --version
+# opção do comando dpkg: --list (List packages matching given pattern)
+sudo dpkg --list wireshark
+sudo dpkg --list tcpdump
 
 # mdk4, crunch e macchanger (ferramentas complementares)
-sudo mdk4 --help | head -n 5
-sudo crunch --version 2>&1 | head -n 3
-sudo macchanger --version
+# opção do comando dpkg: --list (List packages matching given pattern)
+sudo dpkg --list mdk4
+sudo dpkg --list crunch
+sudo dpkg --list macchanger
 ```
 
-### 🩹 Caso alguma ferramenta esteja ausente
+## 07 - Instalação e Verificação das Antenas Wi-Fi Externas no Parrot 
 
-Se algum comando acima retornar "comando não encontrado" (pode variar conforme a variante/imagem do Parrot utilizada), instale o pacote correspondente normalmente via `apt`, pois todos estão disponíveis nos repositórios oficiais do Parrot:
+### 📶 07.1 — Antena Qualcomm Atheros AR9271 (`ath9k_htc`) e Realtek RTL8188EUS (`rtl8188eus`)
+
+Essas antenas é reconhecidas **nativamente** pelo kernel do Parrot, sem necessidade de driver adicional — mesmo comportamento do Kali e do Mint.
 
 ```bash
-# Instalação das ferramentas utilizadas nas aulas de Rede Sem-Fio Manualmente
-sudo apt install -y aircrack-ng reaver pixiewps hcxtools hcxdumptool hashcat hydra wireshark tcpdump mdk4 crunch macchanger
+# Desativando o recurso de renomear os dispositivos de Rede com Base na Identificação da BIOS
+
+# Alterar as configuração do arquivo do GRUB adicionando as opções de desativar o BIOS DevName
+# opção do comando sed: -i (Edita o arquivo diretamente (in-place)),
+# ^GRUB_CMDLINE_LINUX="\(.*\)" = Captura o conteúdo atual entre aspas da variável (ex.: quiet splash).
+# \1 = Reinsere o conteúdo capturado (preserva quiet splash).
+# net.ifnames=0 biosdevname=0 = Adiciona as novas opções ao final, mantendo o que já existia.
+sudo sed -i 's/^GRUB_CMDLINE_LINUX="\(.*\)"/GRUB_CMDLINE_LINUX="\1 net.ifnames=0 biosdevname=0"/' /etc/default/grub
+
+# Atualizando o GRUB com as novas opções
+sudo update-grub
+
+# Reiniciar a máquina para testar as configurações de Placa de Rede
+sudo reboot
 ```
-
-| Pacote | Uso nas Aulas 06-10 |
-|--------|---------------------|
-| `aircrack-ng` | `airmon-ng`, `airodump-ng`, `aireplay-ng`, `aircrack-ng` — base de todas as aulas de quebra de senha (Aulas 06-09). |
-| `reaver` | Instala `reaver` **e** `wash` — enumeração e ataque de PIN WPS (Aula 07). |
-| `pixiewps` | Ataque offline **Pixie Dust**, usado com `reaver -K 1`/`-P` (Aula 07). |
-| `hcxtools` / `hcxdumptool` | Captura e conversão para ataque PMKID (Aula 08, item 09). |
-| `hashcat` | Aceleração do ataque de dicionário WPA/WPA2 (Aula 08, item 08). |
-| `hydra` | Força bruta contra a WebGUI dos Access Points (Aula 10). |
-| `wireshark` / `tcpdump` | Análise visual e em linha de comando dos arquivos `.cap`/`.pcapng`. |
-| `mdk4` / `crunch` / `macchanger` | Flood de desautenticação (contorno de lockout WPS), geração de wordlists e alteração de MAC. |
----
-
-### ✅ Testes de Validação
-
-| # | Teste |
-|---|-------|
-| 1 | Todos os comandos de conferência retornam versão/ajuda, sem erro de "comando não encontrado". |
-| 2 | `wash -i <interface>mon -s` lista APs com WPS ativo (repetir o teste da Aula 07, item 03). |
-| 3 | `hashcat -b -m 22000` executa um benchmark completo do modo WPA/WPA2/PMKID sem falha de driver. |
----
-
-> 💡 **Permissões:** ao contrário do Linux Mint (Aula 02b, item 10), o Parrot Security — assim como o Kali — normalmente **não exige** ajustes adicionais de grupo (`wireshark`) ou `setcap` para captura básica com o usuário padrão em ambiente live/instalado para pentest. Caso a captura sem `sudo` seja necessária, o mesmo procedimento da Aula 02b (item 10) pode ser aplicado.
----
-
-## 07 - Instalação e Verificação das Antenas Wi-Fi Externas
-
-### 📶 07.1 — Antena Qualcomm Atheros AR9271 (`ath9k_htc`)
-
-Esta antena é reconhecida **nativamente** pelo kernel do Parrot, sem necessidade de driver adicional — mesmo comportamento do Kali e do Mint.
 
 ```bash
 # Conectar a antena na porta USB e verificar reconhecimento dele com os comandos básicos
 
-# Listando todos os dispositivos conectados na Porta USB do Kali Linux
-sudo lsusb
+# Listando todos os dispositivos conectados na Porta USB no Parrot 
+# opção do comando grep: -i (Ignore case distinctions in patterns and input data)
+sudo lsusb | grep -i Atheros
+sudo lsusb | grep -i Realtek
 
-# Listando todas as interfaces de rede Sem-Fio do Kali Linux
+# Listando todas as interfaces de rede Sem-Fio no Parrot
 sudo iwconfig
 
-# Verificando as mensagens do Kernel referente ao Driver da Placa de Rede no Kali Linux
+# Verificando as mensagens do Kernel referente ao Driver da Placa de Rede no Parrot
+# opção do comando grep: -i (Ignore case distinctions in patterns and input data)
 sudo dmesg | grep -i ath9k
+sudo dmesg | grep -i rtl81
 ```
 
 | Campo | Valor esperado | Descrição |
 |-------|----------------|-----------|
-| `lsusb` | Identifica fabricante/chipset `Qualcomm Atheros AR9271` | Confirma que o hardware foi detectado na porta USB. |
-| `iwconfig` | Lista uma interface `wlan1` (ou similar) | Confirma que o driver `ath9k_htc` carregou a interface de rede sem-fio. |
-| `dmesg \| grep -i ath9k` | Mensagens de carregamento do módulo `ath9k_htc` e do firmware | Confirma que o firmware da antena foi carregado com sucesso pelo kernel. |
+| `lsusb` | Identifica fabricante/chipset `Qualcomm Atheros AR9271` - `Realtek RTL8188EUS` | Confirma que o hardware foi detectado na porta USB. |
+| `iwconfig` | Lista uma interface `wlan1` (ou similar) | Confirma que o driver `ath9k_htc` - `rtl8188eus` carregou a interface de rede sem-fio. |
+| `dmesg \| grep -i ath9k \| grep -i rtl81` | Mensagens de carregamento do módulo `ath9k_htc` - `rtl8188eus` e do firmware | Confirma que o firmware da antena foi carregado com sucesso pelo kernel. |
 ---
-
-### 📶 07.2 — Antena Realtek RTL8188EUS (driver DKMS)
-
-Diferente do Kali (que possui o pacote `realtek-rtl8188eus-dkms` pronto no próprio repositório `contrib`), o Parrot **não mantém esse pacote empacotado oficialmente** — mesma situação já descrita para o Linux Mint (Aula 02b, item 06.2). É necessário compilar o driver via DKMS a partir do repositório mantido pela própria comunidade aircrack-ng no GitHub.
-
-```bash
-# Pré-requisitos para compilação do módulo via DKMS
-sudo apt update
-sudo apt install -y dkms build-essential git linux-headers-$(uname -r)
-
-# Clonar o driver mantido pelo projeto aircrack-ng
-git clone https://github.com/aircrack-ng/rtl8188eus.git
-
-# Acessando o diretório clocado do driver da placa de rede
-cd rtl8188eus
-
-# Instalar via DKMS
-sudo cp -r . /usr/src/rtl8188eus-5.3.9
-sudo dkms add -m rtl8188eus -v 5.3.9
-sudo dkms build -m rtl8188eus -v 5.3.9
-sudo dkms install -m rtl8188eus -v 5.3.9
-
-# Reiniciando o sistema para validar o driver
-sudo reboot
-```
-
-| Campo | Descrição |
-|-------|-----------|
-| `dkms` | Framework que recompila automaticamente o módulo a cada atualização do kernel — essencial após os `apt upgrade`/`full-upgrade` do item 04. |
-| `github.com/aircrack-ng/rtl8188eus` | Repositório com o driver corrigido para suportar **modo monitor e injeção de pacotes**, mantido pela mesma equipe do aircrack-ng — alternativa ao driver genérico `r8188eu` do kernel, que não garante suporte completo a injeção. |
----
-
-```bash
-# Após reiniciar, verificar se o módulo carregou corretamente
-lsmod | grep 8188eu
-dmesg | grep -i 8188eu
-iwconfig
-```
-
-> ⚠️ **Conflito de driver:** caso a interface trave em modo gerenciado, pode haver conflito com o módulo genérico `r8188eu` já presente no kernel. Para resolver:
-
-```bash
-# Edicionando o Driver antigo na Blacklist do Kernel para não ser inicializado
-echo "blacklist r8188eu" | sudo tee -a /etc/modprobe.d/realtek-blacklist.conf
-
-# Reiniciando o sistema e testando novamente
-sudo reboot
-```
-
-> 💡 **Secure Boot:** se o notebook estiver com Secure Boot habilitado, o módulo DKMS compilado localmente não será carregado (módulo não assinado). Desabilite o Secure Boot na BIOS/UEFI antes deste passo (ver item 01), ou assine o módulo manualmente (fora do escopo desta aula).
 
 ### ✅ Testes de Validação
 
@@ -399,19 +371,30 @@ sudo reboot
 > 💡 **Dica:** identifique e anote qual interface (`wlan0`, `wlan1`, etc.) corresponde a cada antena — essa informação será usada nas Aulas 06 a 10 (`airmon-ng start <interface>`), evitando confundir a placa Wi-Fi interna do notebook com as antenas externas de teste.
 ---
 
-## 08 - Testes de Validação Final
+## 08 - Testes de Validação Final do Aircrack-NG no Parrot
 
 Repita o fluxo completo de uma aula anterior (ex.: reconhecimento passivo da Aula `03-analytics/01-...`) usando somente o Parrot Security instalado neste procedimento, para confirmar que o ambiente está pronto:
 
 ```bash
-# 1. Finalizar processos conflitantes
+# 1. Listando os processos conflitantes do gerenciador de Redes
+# opção do comando airmon-ng: check (List all possible programs that could interfere with the wireless card)
+sudo airmon-ng check
+
+# 2. Finalizar processos conflitantes do gerenciador de Redes
+# opções do comando airmon-ng: check (List all possible programs that could interfere with the wireless card), 
+# kill (If 'kill' is specified, it will try to kill all of them)
 sudo airmon-ng check kill
 
-# 2. Habilitar modo monitor na antena externa
+# 3. Habilitar modo monitor na antena externa USB
+# opção do comando airmon-ng: start (Enable  monitor  mode on an interface (and specify a channel))
 sudo airmon-ng start wlan1
 
-# 3. Reconhecimento passivo
-sudo airodump-ng wlan1mon
+# 4. Listando todas as interfaces de rede Sem-Fio no Parrot
+# Verificar a opção: Mode:Monitor (Modo Monitor) da Interface WLAN1
+sudo iwconfig
+
+# 5. Reconhecimento passivo das redes sem-fio
+sudo airodump-ng wlan1
 ```
 
 ### ✅ Checklist de Validação Final

