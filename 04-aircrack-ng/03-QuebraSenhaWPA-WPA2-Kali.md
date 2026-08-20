@@ -12,8 +12,8 @@
 |-------|-----------|
 | **Autor** | Robson Vaamonde |
 | **Data de criação** | 22/07/2026 |
-| **Data de atualização** | 18/08/2026 |
-| **Versão** | 0.02 |
+| **Data de atualização** | 20/08/2026 |
+| **Versão** | 0.03 |
 | **Equipamentos testados** | Archer C50 (W) e Archer EC220-G5 |
 ---
 
@@ -36,7 +36,7 @@
 
 > Este material é destinado **exclusivamente a fins didáticos**, em **ambiente de rede controlada e isolada** (laboratório), com equipamentos de propriedade da instituição de ensino e consentimento expresso para os testes.
 >
-> A utilização das técnicas aqui descritas contra redes de terceiros, sem autorização formal, configura crime previsto no **Código Penal Brasileiro** (arts. 154-A e 154-B — invasão de dispositivo informático; art. 266 — interrupção de serviço telemático; arts. 155 e 157 — subtração de coisa alheia), além de responsabilidade civil (Código Civil, arts. 927 a 943).
+> A utilização das técnicas aqui descritas contra redes de terceiros, sem autorização formal, configura crime previsto no **Código Penal Brasileiro** __`(arts. 154-A e 154-B — invasão de dispositivo informático; art. 266 — interrupção de serviço telemático; arts. 155 e 157 — subtração de coisa alheia)`__, além de responsabilidade civil __`(Código Civil, arts. 927 a 943)`__.
 >
 > Cada grupo deve atacar **somente** o Access Point que lhe foi atribuído no laboratório.
 ---
@@ -111,7 +111,7 @@ sudo iwconfig
 
 | # | Teste |
 |---|-------|
-| 1 | `iwconfig` exibe `wlan1mon` com **Mode:Monitor**. |
+| 1 | `iwconfig` exibe `wlan1` OU `wlan1mon` com **Mode:Monitor**. |
 | 2 | Nenhum processo do NetworkManager reaparece interferindo na interface. |
 ---
 
@@ -119,7 +119,7 @@ sudo iwconfig
 
 ```bash
 # Escaneamento da rede utilizando o Airodump-NG em busca de Access Point e End Points
-sudo airodump-ng wlan1mon
+sudo airodump-ng wlan1
 ```
 
 | Campo | Descrição |
@@ -150,7 +150,7 @@ sudo airodump-ng wlan1mon
 # Focar a captura em um único AP/canal para observar as informações de Beacons e Data Sources
 # opção do comando airodump-ng: -c ( Indicates the frequencies to listen to), --bssid (t will only
 # show networks, matching the given bssid), -w (Is  the  dump  file prefix to use)
-sudo airodump-ng -c <CANAL> --bssid <BSSID_DO_AP> -w chavewpa wlan1mon
+sudo airodump-ng -c <CANAL> --bssid <BSSID_DO_AP> -w chavewpa wlan1
 ```
 
 | Parâmetro | Descrição |
@@ -188,7 +188,7 @@ sudo aireplay-ng -0 5 -a <BSSID_DO_AP> -c <MAC_DO_CLIENTE_STATION> wlan1mon
 | `-c` | MAC do cliente (Station) a ser desautenticado, obtido no passo 03. |
 | `wlan1mon` | Interface em modo monitor usada para a injeção. |
 
-> ⚠️ **Sem cliente associado (STATION vazio)?** É necessário aguardar passivamente até que algum dispositivo se conecte naturalmente à rede — o modo passivo não exige capacidade de injeção, mas depende de um cliente se autenticar durante a captura.
+> ⚠️ **Sem cliente associado (STATION vazio)?** É necessário aguardar `passivamente` até que algum dispositivo se conecte naturalmente à rede — o modo passivo não exige **capacidade de injeção**, mas depende de um cliente se autenticar durante a captura.
 ---
 
 > 💡 **Modo passivo (alternativa):** caso não queira interferir ativamente na rede, basta manter o `airodump-ng` do passo 04 rodando e aguardar a reconexão espontânea de algum dispositivo (ex.: um celular saindo do modo avião ou reconectando ao Wi-Fi).
@@ -211,6 +211,19 @@ sudo aircrack-ng -b <BSSID_DO_AP> chavewpa-01.cap
 ```
 
 Ao rodar sem especificar dicionário, o `aircrack-ng` lista as redes presentes no arquivo `.cap` e indica se um handshake válido foi capturado para o BSSID (`1 handshake` ao lado do ESSID).
+
+> **OBSERVAÇÃO:** `4-way Handshake (aperto de mãos de 4 vias ou negociação de 4 vias) consiste em: 
+
+| Etapa | Access Point (AP) → Cliente | Cliente (Endpoint) → Access Point | Explicação simples e objetiva |
+|-------|-----------------------------|-----------------------------------|-------------------------------|
+| 1 | Envia **ANonce** (número aleatório do AP) | — | O AP gera um número aleatório e envia ao cliente. É o primeiro ingrediente para calcular a chave de sessão (PTK). |
+| 2 | — | Envia **SNonce** (número aleatório do cliente) + **MIC** | O cliente gera seu próprio número aleatório, já calcula a PTK localmente (usando ANonce + SNonce + PSK) e envia o SNonce junto com um MIC (código de integridade) para o AP validar. |
+| 3 | Envia **GTK** (chave de grupo) + **MIC** | — | Com a PTK calculada, o AP confirma a negociação e envia a chave de grupo (usada para tráfego broadcast/multicast), protegida e assinada com MIC. |
+| 4 | — | Envia **ACK** (confirmação) | O cliente confirma o recebimento e a instalação das chaves. A partir daqui, o tráfego passa a ser criptografado com a PTK. |
+---
+
+> 💡 **Por que isso importa na quebra de WPA/WPA2:** o handshake completo (os 4 pacotes EAPOL) é capturado com `airodump-ng`/`aireplay-ng -0` (deauth para forçar reconexão). Depois, um ataque de **dicionário** (`aircrack-ng -w wordlist.txt` ou `hashcat -m 22000`) testa candidatos de senha **offline**, recalculando a PTK para cada senha candidata e comparando com o MIC capturado — se bater, a senha (PSK) foi encontrada.
+---
 
 > 💡 **Dica:** se o handshake não aparecer, repita os passos 04 e 05 — em ambientes de laboratório com muitos grupos transmitindo simultaneamente, pacotes deauth podem se perder; vale repetir o ataque 2-3 vezes.
 ---
@@ -277,7 +290,7 @@ Em alguns APs, é possível obter o **PMKID** diretamente do primeiro pacote EAP
 
 ```bash
 # Capturar o PMKID (não requer cliente associado nem deauth)
-sudo hcxdumptool -i wlan0mon -o captura.pcapng --enable_status=1
+sudo hcxdumptool -i wlan1 -o captura.pcapng --enable_status=1
 
 # Converter para o formato do hashcat
 sudo hcxpcapngtool -o captura.22000 captura.pcapng

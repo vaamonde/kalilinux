@@ -86,7 +86,7 @@ sudo lsusb
 
 | Campo | Valor esperado | Descrição |
 |-------|----------------|-----------|
-| **Interface** | `wlan0` (ou `wlan1`) | Nome da interface de rede sem-fio reconhecida pelo Kali. |
+| **Interface** | `wlan0` ou `wlan1` | Nome da interface de rede sem-fio reconhecida pelo Kali. |
 | **Chipset compatível** | `Atheros, Realtek RTL88xx, Ralink` | Chipsets recomendados por suportarem modo monitor e injeção de pacotes nativamente no aircrack-ng suite. |
 ---
 
@@ -126,11 +126,11 @@ sudo airmon-ng start wlan1
 sudo iwconfig
 ```
 
-Isso cria a interface virtual **`wlan1`**, usada em todos os passos seguintes.
+Isso cria a interface virtual **`wlan1` ou `wlan1mon`** , usada em todos os passos seguintes.
 
 | Campo | Descrição |
 |-------|-----------|
-| `wlan1` | Interface virtual em modo monitor, capaz de capturar todos os quadros 802.11 no ar (Beacon Frames, Probe Requests, Data), independentemente de estarem endereçados à sua placa. |
+| `wlan1` ou `wlan1mon`| Interface virtual em modo monitor, capaz de capturar todos os quadros 802.11 no ar (Beacon Frames, Probe Requests, Data), independentemente de estarem endereçados à sua placa. |
 ---
 
 ### ✅ Testes de Validação
@@ -195,7 +195,7 @@ sudo airodump-ng -c <CANAL> --bssid <BSSID_DO_AP_WEP> -w chavewep wlan1
 > 💡 **Meta:** para WEP, normalmente **10.000 a 30.000 IVs (Data)** já são suficientes para a quebra da chave via criptoanálise estatística (dependendo do tamanho da chave, 64 ou 128 bits).
 ---
 
-## 05 - Geração de Tráfego — Ataque ARP Replay
+## 05 - Geração de Tráfego — Ataque ARP Replay (SOMENTE SE NECESSÁRIO - SEM CLIENTE ENVIADO DADOS)
 
 Em redes ociosas, o número de pacotes cresce muito devagar. Para acelerar a coleta de vetores de inicialização (IVs), utiliza-se o **aireplay-ng** para reinjetar requisições ARP capturadas, forçando o AP a gerar novos pacotes criptografados continuamente.
 
@@ -266,7 +266,7 @@ sudo aircrack-ng -b <BSSID_DO_AP> chavewep-01.cap
 
 | Situação | Ação |
 |----------|------|
-| ✅ `KEY FOUND! [ XX:XX:XX:XX:XX ]` | Chave WEP quebrada com sucesso — anotar a senha encontrada (em hexadecimal ou ASCII) no relatório do grupo. |
+| ✅ `KEY FOUND! [ XX:XX:XX:XX:XX ]` | Chave WEP quebrada com sucesso — anotar a senha encontrada **SEM OS** `: (DOIS PONTOS)` (em hexadecimal ou ASCII) no relatório do grupo. |
 | ❌ Falha (poucos IVs) | Retornar ao passo 05 e continuar a reinjeção ARP até acumular mais pacotes, depois repetir o `aircrack-ng`. |
 ---
 

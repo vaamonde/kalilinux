@@ -206,7 +206,7 @@ sudo iwconfig
 
 | Campo | Descrição |
 |-------|-----------|
-| `wlan1` (ou similar) | Interface virtual criada em modo monitor, usada em todos os comandos de reconhecimento e, posteriormente, nas aulas de exploração. |
+| `wlan1` ou `wlan1mon` | Interface virtual criada em modo monitor, usada em todos os comandos de reconhecimento e, posteriormente, nas aulas de exploração. |
 ---
 
 > ⚠️ **Importante:** nesta aula, o modo monitor é usado **apenas para observação** (reconhecimento passivo) — nenhum pacote de desautenticação, injeção ou ataque é enviado. O objetivo é exclusivamente mapear o ambiente.
@@ -301,7 +301,7 @@ ls -lh
 
 ```bash
 # Focar a captura em um único AP/canal para observar o PWR com mais estabilidade
-# opção do comando airodump-ng: -c ( ndicates the frequencies to listen to), --bssid (t will only
+# opção do comando airodump-ng: -c (indicates the frequencies to listen to), --bssid (t will only
 # show networks, matching the given bssid)
 sudo airodump-ng -c <CANAL> --bssid <BSSID_DO_AP> wlan1
 ```

