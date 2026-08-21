@@ -145,7 +145,7 @@ sudo airodump-ng --wps wlan1
 # Filtrando o Access Point com suporte ao WPS (QSS) com base no BSSID
 # opção do comando airodump-ng: -c ( Indicates the frequencies to listen to), --bssid (t will only show 
 # networks, matching the given bssid),--wps (Display a WPS column with WPS version, config method(s))
-sudo airodump-ng -c <CANAL> -bssid <BSSID_DO_AP_WPS> --wps wlan1
+sudo airodump-ng -c <CANAL> --bssid <BSSID_DO_AP_WPS> --wps wlan1
 ```
 
 | Método | Descrição |
