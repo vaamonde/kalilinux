@@ -12,8 +12,8 @@
 |-------|-----------|
 | **Autor** | Robson Vaamonde |
 | **Data de criação** | 22/07/2026 |
-| **Data de atualização** | 19/08/2026 |
-| **Versão** | 0.04 |
+| **Data de atualização** | 21/08/2026 |
+| **Versão** | 0.05 |
 | **Equipamentos testados** | Archer C50 (W) e Archer EC220-G5 |
 ---
 
