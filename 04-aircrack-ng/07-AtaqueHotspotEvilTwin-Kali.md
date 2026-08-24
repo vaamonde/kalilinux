@@ -100,14 +100,6 @@ airmon-ng start wlan0
 
 > 💡 **Duas interfaces facilitam esta aula:** uma em **modo monitor** (reconhecimento/deauth) e outra dedicada a **subir o AP falso** (`airbase-ng`/`hostapd`). Com apenas uma antena disponível, os passos podem ser executados sequencialmente, alternando o modo da interface conforme a etapa.
 
-> 💡 **Alternativa (drivers incompatíveis com airmon-ng):**
-> ```bash
-> ifconfig wlan0 down
-> iwconfig wlan0 mode monitor
-> ifconfig wlan0 up
-> iwconfig   # confirmar o modo monitor
-> ```
-
 ### ✅ Testes de Validação
 
 | # | Teste |
